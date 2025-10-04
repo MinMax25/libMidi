@@ -79,6 +79,15 @@ public class SMFConverter
 
     #endregion
 
+    #region ctor
+
+    public SMFConverter()
+    {
+
+    }
+
+    #endregion
+
     #region Method
 
     public static MidiData Convert(ConvertType convertType, MidiData source)
