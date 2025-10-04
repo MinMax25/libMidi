@@ -11,27 +11,39 @@ public class ConverterSetting
     }
     private static string? _Root;
 
-    public bool ChannelFix { get; set; }
+    public bool ChannelFix { get; set; } = true;
 
-    public bool InsertTrackName { get; set; }
+    public bool InsertTrackName { get; set; } = true;
 
-    public bool RemoveProgramChange { get; set; }
+    public bool RemoveProgramChange { get; set; } = true;
 
-    public bool ReplaceNoteOn { get; set; }
+    public bool ReplaceNoteOn { get; set; } = true;
 
-    public bool CreateCodeTrack { get; set; }
+    public bool CreateCodeTrack { get; set; } = true;
 
-    public bool LyricAdustment { get; set; }
+    public bool LyricAdustment { get; set; } = true;
 
-    public bool LyricPaddingPlus { get; set; }
+    public bool LyricPaddingPlus { get; set; } = true;
 
-    public int SRTOffset { get; set; }
+    public int SRTOffset { get; set; } = -300;
 
-    public bool SRTRemoveComment { get; set; }
+    public bool SRTRemoveComment { get; set; } = true;
 
-    public bool XFStyleConvert { get; set; }
+    public bool XFStyleConvert { get; set; } = true;
 
-    public SMFEncode Encode { get; set; }
+    public SMFEncode Encode { get; set; } = SMFEncode.UTF8;
 
-    public List<string> FilterKeys { get; set; } = new();
+    public List<string> FilterKeys { get; set; } = [
+        "調の設定",
+        "歌詞",
+        "マーカー",
+        "シーケンス名 (曲タイトル) /トラック名",
+        "テンポ",
+        "拍子の設定",
+        "ノート・オフ",
+        "ノート・オン",
+        "ピッチベンド",
+        "Expression",
+        "Hold1"
+  ];
 }
