@@ -21,5 +21,5 @@ public record ProgramChange
 
     public override byte[] GetByte() => [StatusByte, PgNum];
 
-    public override string ToString() => $"{GetType().Name} {PgNum}";
+    public override string ToString() => $"{GetType().Name} №{PgNum +1 }";
 }
