@@ -1,3 +1,6 @@
+/*********
+ * libMidi
+ */
 MIT License
 
 Copyright (c) 2025 Min Max
