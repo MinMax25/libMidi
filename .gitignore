@@ -1,12 +1,92 @@
-﻿/.vs
+﻿## =======================================
+## .NET Class Library / NuGet Package Project
+## =======================================
+
+# =====================
+# Build artifacts
+# =====================
 [Bb]in/
 [Oo]bj/
+[Ll]og/
 [Ll]ogs/
-[Dd]ebug*/
-[Rr]elease*/
+[Bb]uild/
+out/
+artifacts/
+publish/
+dist/
+
+# =====================
+# Optional: keep built NuGet packages
+# =====================
+# NuGet パッケージを GitHub Release 等で配布する場合は、
+# 下記2行のコメントを外す
+!bin/**/*.nupkg
+!bin/**/*.snupkg
+
+# =====================
+# Visual Studio
+# =====================
 .vs/
-*.csproj.user
-*.suo
 *.user
+*.suo
 *.userosscache
 *.sln.docstates
+
+# =====================
+# JetBrains / Rider
+# =====================
+.idea/
+*.DotSettings.user
+
+# =====================
+# Test & Coverage
+# =====================
+TestResult*/
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+*.gcov
+*.lcov
+
+# =====================
+# NuGet
+# =====================
+packages/
+.nuget/
+*.nuspec
+
+# =====================
+# OS-specific
+# =====================
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+# Linux
+*~
+
+# =====================
+# Secrets & Environment
+# =====================
+*.env
+*.env.*
+secrets.json
+
+# =====================
+# Tooling / Editor
+# =====================
+.vscode/
+*.orig
+*.bak
+*.swp
+
+# =====================
+# Publish artifacts (optional)
+# =====================
+AppPackages/
+BundleArtifacts/

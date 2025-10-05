@@ -8,8 +8,8 @@
 
     <!-- NuGet Package Info -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>libMidi</PackageId>
-    <Version>1.0.0</Version>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Version>$(VersionPrefix)</Version>
     <Authors>Min Max</Authors>
     <Company>Min Max</Company>
     <Description>Library for SMF File</Description>
