@@ -143,8 +143,13 @@ public abstract class TrackBase
         //InstInfo
         InstInfo =
             (Parent?.ConvertType == ConvertType.Instrument)
-            ? Events.FirstOrDefault(x => x.InstrumentInfo != null)?.InstrumentInfo
+            ? Events.FirstOrDefault(x => x.InstrumentInfo != null)?.InstrumentInfo 
             : null;
+
+        if (Channel == 10 && InstInfo == null)
+        {
+            EventAdd(0, new ProgramChange(10, 0));
+        }
 
         //IsDrum
         IsDrum = (InstInfo != null) && (Parent?.DrumChannel.Any(x => x == Channel) ?? false);
