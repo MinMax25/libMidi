@@ -20,9 +20,6 @@ MIDI チャンネル、デバイスピッチ、ドラムマッピングなどの
 - .NET SDK 8.0 以上
 - Windows 7 以降
 
-## ビルド：
-dotnet build -c Release
-
 ## ライセンス：MIT
 
 作者：Min Max
