@@ -50,6 +50,8 @@ public class MidiData
 
     public List<TempoItem> TempoMap { get; init; } = new();
 
+    public bool IsMultiTimber => Format != DataFormat.Format0 && Tracks.Any(x => x.Channels.Count() > 0);
+
     #endregion
 
     #region ctor

@@ -6,4 +6,5 @@ public enum ConvertType
     Format0,
     Format1,
     Instrument,
+    MultiTimber
 }

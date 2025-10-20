@@ -90,13 +90,6 @@ public class SMFConverter
 
     #region Method
 
-    public static MidiData Convert(ConvertType convertType, MidiData source)
-    {
-        MidiData result = new();
-        Convert(convertType, result);
-        return result;
-    }
-
     public static void Convert(ConvertType convertType, MidiData source, MidiData result)
     {
         result.Initialize();
