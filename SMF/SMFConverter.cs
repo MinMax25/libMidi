@@ -104,27 +104,34 @@ public class SMFConverter
         }
         result.Origine.Organize();
 
-        if (convertType == ConvertType.Instrument)
+        switch (convertType, source.Format)
         {
-            SplitChannelInstrment(source, ref result);
-        }
-        else
-        {
+            case (ConvertType.Instrument, _):
+                SplitChannelInstrment(source, ref result);
+                return;
 
-            if (source.Format == DataFormat.Format0 & convertType == ConvertType.Format0)
+            case (ConvertType.MultiTimber, _):
+                SplitMultiTimber(source, ref result);
+                return;
+
+            case (ConvertType.Format0, DataFormat.Format0):
                 Copy(source, ref result);
-            else if (source.Format == DataFormat.Format0 & convertType == ConvertType.Format1)
-                ChannelSeparate(source, ref result);
-            else if (source.Format == DataFormat.Format1 & convertType == ConvertType.Format0)
+                break;
+            case (ConvertType.Format0, DataFormat.Format1):
                 MergeTrack(source, ref result);
-            else if (source.Format == DataFormat.Format1 & convertType == ConvertType.Format1)
+                break;
+            case (ConvertType.Format1, DataFormat.Format0):
+                ChannelSeparate(source, ref result);
+                break;
+            case (ConvertType.Format1, DataFormat.Format1):
                 Copy(source, ref result);
-            else
+                break;
+            default:
                 throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
-
-            result.Organize();
-            result.Tracks.ToList().ForEach(tr => tr.SetFilter(Def.InitFilter.Select(x => x.Key).ToArray()));
         }
+
+        result.Organize();
+        result.Tracks.ToList().ForEach(tr => tr.SetFilter(Def.InitFilter.Select(x => x.Key).ToArray()));
     }
 
     public static void SaveConfig()
@@ -356,6 +363,47 @@ public class SMFConverter
 
         result.Organize();
         result.Tracks.ToList().ForEach(tr => tr.SetFilter(Def.InitFilter.Select(x => x.Key).ToArray()));
+    }
+
+    private static void SplitMultiTimber(MidiData midiData, ref MidiData result)
+    {
+        foreach (var track in midiData.Tracks)
+        {
+            var newtrack = result.NewTrack<Track>();
+
+            if (track.Events.FirstOrDefault(x => x.Message is ProgramChange) is MidiEvent pcev)
+            {
+                var pc = (ProgramChange)pcev.Message;
+                newtrack.EventAdd(pcev with { Message = pc with { Ch = 1 } });
+            }
+
+            PitchBend? lastpitchbend = null;
+
+            foreach (var midiEvent in track.Events)
+            {
+                if (midiEvent.Message is ChannelNoteMessage noteMessage)
+                {
+                    newtrack.EventAdd(midiEvent with { Message = noteMessage with { Ch = 1 } }); 
+                }
+                else if (midiEvent.Message is PitchBend pb)
+                {
+                    if (lastpitchbend == null || lastpitchbend.Value != pb.Value)
+                    {
+                        newtrack.EventAdd(midiEvent with { Message = pb with { Ch = 1 } });
+                        lastpitchbend = pb;
+                    }
+                }
+                else if (midiEvent.Message is ControlChange cc)
+                {
+                    if (cc.CtrlType == CtrlType.Expression)
+                    {
+                        newtrack.EventAdd(midiEvent with { Message = cc with { Ch = 1 } });
+                    }
+                }
+            }
+
+            result.AddTrack(newtrack);
+        }
     }
 
     private static ITrack GetCodeTrack(MidiData midiData, ref MidiData result, List<MidiEvent> events)
