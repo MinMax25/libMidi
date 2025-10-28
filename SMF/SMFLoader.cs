@@ -7,9 +7,9 @@ namespace libMidi.SMF;
 
 public static class SMFLoader
 {
-    private static readonly List<byte[]> HeaderIDList = new() { Chunk.HEADER_ID };
+    private static readonly List<byte[]> HeaderIDList = [Chunk.HEADER_ID];
 
-    private static readonly List<byte[]> TrackIDList = new() { Chunk.TRACK_ID, Chunk.XFID_ID, Chunk.XFKM_ID };
+    private static readonly List<byte[]> TrackIDList = [Chunk.TRACK_ID, Chunk.XFID_ID, Chunk.XFKM_ID];
 
     public static MidiData Load(string fileName)
     {

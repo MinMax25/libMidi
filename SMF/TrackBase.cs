@@ -31,13 +31,13 @@ public abstract class TrackBase
 
     public IEnumerable<MidiEvent> Events => _Events;
 
-    private readonly List<MidiEvent> _Events = new();
+    private readonly List<MidiEvent> _Events = [];
 
     public IEnumerable<MidiEvent> FilterdEvents => FilterEnabled ? _FilterdEvents : _Events;
 
-    private readonly List<MidiEvent> _FilterdEvents = new();
+    private readonly List<MidiEvent> _FilterdEvents = [];
 
-    public Dictionary<string, object> Filter { get; } = new();
+    public Dictionary<string, object> Filter { get; } = [];
 
     public bool FilterEnabled { get; set; }
 
@@ -396,7 +396,7 @@ public abstract class TrackBase
 
     public byte[] GetByte()
     {
-        List<byte> bytes = new();
+        List<byte> bytes = [];
 
         int size = Events.Select(x => x.GetByte().Length).Sum();
 
