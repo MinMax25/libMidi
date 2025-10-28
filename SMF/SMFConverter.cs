@@ -407,8 +407,20 @@ public class SMFConverter
                 }
             }
 
+            if (!newtrack.Events.Any(x => x.Message is SequenceTrackName))
+            {
+                if (newtrack.Events.FirstOrDefault(x => x.Message is ProgramChange)?.InstrumentInfo is InstInfo info)
+                {
+                    var name = InstMap.GetInstName(info, track.IsDrum);
+                    var seqname = new SequenceTrackName(name);
+                    var ev = new MidiEvent(newtrack) { AbsoluteTick = 0, Message = seqname };
+                    newtrack.EventInsertHead(ev);
+                }
+            }
+
             result.AddTrack(newtrack);
         }
+
         result.Organize();
         result.Tracks.ToList().ForEach(tr => tr.SetFilter(Def.InitFilter.Select(x => x.Key).ToArray()));
     }
