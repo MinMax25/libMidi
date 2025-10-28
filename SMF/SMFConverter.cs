@@ -37,11 +37,11 @@ public class SMFConverter
 
     #region Filter
 
-    public Dictionary<string, object> Filter { get; } = new();
+    public Dictionary<string, object> Filter { get; } = [];
 
-    public Dictionary<string, object> FilterTargetList { get; } = new();
+    public Dictionary<string, object> FilterTargetList { get; } = [];
 
-    public Dictionary<string, object> InitFilter { get; } = new();
+    public Dictionary<string, object> InitFilter { get; } = [];
 
     public Dictionary<string, object> InitMeta =>
         FilterTargetList.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(MetaMessage)))
@@ -292,14 +292,14 @@ public class SMFConverter
                     continue;
                 }
 
-                if (isNoteEvent && buff.Any())
+                if (isNoteEvent && buff.Count != 0)
                 {
                     if (track.Events.Any())
                     {
                         result.AddTrack(track);
                         track = result.NewTrack<Track>();
                     }
-                    while (buff.Any()) track.EventAdd(buff.Dequeue());
+                    while (buff.Count != 0) track.EventAdd(buff.Dequeue());
                     needQueue = false;
                     buff.Clear();
                 }
@@ -309,7 +309,7 @@ public class SMFConverter
 
             if (buff.Any(x => x.Message is ProgramChange))
             {
-                while (buff.Any()) track.EventAdd(buff.Dequeue());
+                while (buff.Count != 0) track.EventAdd(buff.Dequeue());
             }
             buff.Clear();
 
@@ -428,7 +428,7 @@ public class SMFConverter
     private static ITrack GetCodeTrack(MidiData midiData, ref MidiData result, List<MidiEvent> events)
     {
         ITrack track = result.NewTrack<Track>();
-        List<byte> buff = new();
+        List<byte> buff = [];
         long abstick = 0;
 
         track.IsCodeTrack = true;
@@ -439,7 +439,7 @@ public class SMFConverter
         {
             if (ev.Message is XFStyleCode code)
             {
-                if (buff.Any())
+                if (buff.Count != 0)
                 {
                     foreach (var v in buff)
                     {
@@ -456,7 +456,7 @@ public class SMFConverter
             abstick = ev.AbsoluteTick;
         }
 
-        if (buff.Any())
+        if (buff.Count != 0)
         {
             if (midiData.Tracks.Select(x => x.Events.LastOrDefault()).OrderBy(x => x?.AbsoluteTick).LastOrDefault() is MidiEvent last)
             {
@@ -476,7 +476,7 @@ public class SMFConverter
 
         var tracks = midiData.Tracks.Where(x => x.Output).ToArray();
 
-        if (!tracks.Any()) throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+        if (tracks.Length == 0) throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
 
         MidiData result = new()
         {
@@ -506,13 +506,13 @@ public class SMFConverter
         File.WriteAllBytes(result.FilePath, result.GetByte());
     }
 
-    public static void SaveSetMidiData(MidiData midiData, string folderPath)
+    public static void SaveSetMidiData(MidiData midiData, string folderPath, bool mid = true, bool nopc = true, bool vocal = true, bool srttext = true, bool lyrictext = true)
     {
         SaveConfig();
 
         string folderName = Path.GetFileNameWithoutExtension(folderPath);
 
-        List<int> output = new();
+        List<int> output = [];
         midiData.NumberOfTrack.RangeEach(x => { if (midiData.GetTrack(x).Output) output.Add(x); });
 
         string pathMID = Path.Combine(folderPath, $"{folderName}.mid");
@@ -576,10 +576,12 @@ public class SMFConverter
         int num = 0;
         foreach (var track in midiData.Tracks)
         {
-            MidiData sepalated = new() { MidiStd = midiData.MidiStd };
-
-            sepalated.FilePath = Path.Combine(folderPath, $"#{num} {track}.mid");
-            sepalated.ConvertType = midiData.ConvertType;
+            MidiData sepalated = new()
+            {
+                MidiStd = midiData.MidiStd,
+                FilePath = Path.Combine(folderPath, $"#{num} {track}.mid"),
+                ConvertType = midiData.ConvertType
+            };
 
             ITrack newTrack = sepalated.AddNewTrack<Track>();
             Def.Filter.ToList().ForEach(x => newTrack.Filter.Add(x.Key, x.Value));

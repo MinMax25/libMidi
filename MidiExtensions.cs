@@ -144,7 +144,7 @@ public static class MidiExtensions
 
     public static byte[] MidiVarToByte(this long value)
     {
-        List<byte> result = new();
+        List<byte> result = [];
 
         long buffer = value & 0x7f;
         while ((value >>= 7) > 0)
@@ -184,7 +184,7 @@ public static class MidiExtensions
 
     public static IEnumerable<InstInfo> GetInstruments(this ITrack target)
     {
-        List<InstInfo> infos = new();
+        List<InstInfo> infos = [];
 
         target.GetMidiEvents<ProgramChange>().ToList().ForEach(x =>
         {

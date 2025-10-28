@@ -6,8 +6,7 @@ public static class Pitch
 {
     public static PitchNoteMethod Method { get; set; }
 
-    private static readonly List<string> NoteNames = new()
-        { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+    private static readonly List<string> NoteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
     public static string NoteName(this byte pitch)
     {

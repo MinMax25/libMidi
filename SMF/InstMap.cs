@@ -14,7 +14,7 @@ public static class InstMap
         {
             if (_Map == null)
             {
-                _Map ??= new();
+                _Map ??= [];
                 Initialize();
             }
             return _Map;

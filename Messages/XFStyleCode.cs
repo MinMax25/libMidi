@@ -23,7 +23,7 @@ public record XFStyleCode
 
     public List<byte> GetCodeVoicing()
     {
-        List<byte> result = new();
+        List<byte> result = [];
 
         if (Data[4] == code.Count - 1)
         {

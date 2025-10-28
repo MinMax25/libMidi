@@ -41,14 +41,14 @@ public class MidiData
     public string FilePath { get; set; } = string.Empty;
 
     public IEnumerable<MidiEvent> TimeSignatures => _TimeSignatures;
-    private readonly List<MidiEvent> _TimeSignatures = new();
+    private readonly List<MidiEvent> _TimeSignatures = [];
 
     public ConvertType ConvertType { get; set; }
 
     public IEnumerable<int> DrumChannel => _DrumChannel;
-    private readonly List<int> _DrumChannel = new();
+    private readonly List<int> _DrumChannel = [];
 
-    public List<TempoItem> TempoMap { get; init; } = new();
+    public List<TempoItem> TempoMap { get; init; } = [];
 
     public bool IsMultiTimber => Format != DataFormat.Format0 && Tracks.Any(x => x.Channels.Count() > 0);
 
@@ -59,7 +59,7 @@ public class MidiData
     public MidiData()
     {
         Division = 480;
-        _Tracks = new List<ITrack>();
+        _Tracks = [];
     }
 
     public MidiData(short division)
