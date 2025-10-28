@@ -506,61 +506,77 @@ public class SMFConverter
         File.WriteAllBytes(result.FilePath, result.GetByte());
     }
 
-    public static void SaveSetMidiData(MidiData midiData, string folderPath, bool mid = true, bool nopc = true, bool vocal = true, bool srttext = true, bool lyrictext = true)
+    public static void SaveSetMidiData(MidiData midiData, string folderPath, string? filename = null, bool mid = true, bool nopc = true, bool vocal = true, bool srttext = true, bool lyrictext = true)
     {
         SaveConfig();
 
         string folderName = Path.GetFileNameWithoutExtension(folderPath);
+        filename ??= Path.GetFileNameWithoutExtension(folderPath);
 
         List<int> output = [];
         midiData.NumberOfTrack.RangeEach(x => { if (midiData.GetTrack(x).Output) output.Add(x); });
 
-        string pathMID = Path.Combine(folderPath, $"{folderName}.mid");
-        string pathNOPC = Path.Combine(folderPath, $"{folderName}_NOPC.mid");
-        string pathVocal = Path.Combine(folderPath, $"{folderName}_Vocal.mid");
-        string pathSRT = Path.Combine(folderPath, $"{folderName}_Lyric.srt");
-        string pathTEXT = Path.Combine(folderPath, $"{folderName}_Lyric.txt");
+        string pathMID = Path.Combine(folderPath, $"{filename}.mid");
+        string pathNOPC = Path.Combine(folderPath, $"{filename}_NOPC.mid");
+        string pathVocal = Path.Combine(folderPath, $"{filename}_Vocal.mid");
+        string pathSRT = Path.Combine(folderPath, $"{filename}_Lyric.srt");
+        string pathTEXT = Path.Combine(folderPath, $"{filename}_Lyric.txt");
 
         // .mid
-        midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
+        if (mid)
+        {
+            midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
 
-        midiData.FilePath = pathMID;
-        SaveMidiData(midiData, Def.Setting.Encode, false);
+            midiData.FilePath = pathMID;
+            SaveMidiData(midiData, Def.Setting.Encode, false);
+        }
 
         // _NOPC.mid
-        midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
+        if (nopc)
+        {
+            midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
 
-        Def.Setting.LyricAdustment = true;
-        Def.Setting.LyricPaddingPlus = false;
-        Def.Setting.RemoveProgramChange = true;
+            Def.Setting.LyricAdustment = true;
+            Def.Setting.LyricPaddingPlus = false;
+            Def.Setting.RemoveProgramChange = true;
 
-        midiData.FilePath = pathNOPC;
-        SaveMidiData(midiData);
+            midiData.FilePath = pathNOPC;
+            SaveMidiData(midiData);
+        }
 
         // _Vocal.mid
-        midiData.Tracks.ToList().ForEach(tr => tr.Output = tr.LyricMatched);
-        midiData.GetTrack(0).Output = true;
+        if (vocal)
+        {
+            midiData.Tracks.ToList().ForEach(tr => tr.Output = tr.LyricMatched);
+            midiData.GetTrack(0).Output = true;
 
-        Def.Setting.LyricAdustment = true;
-        Def.Setting.LyricPaddingPlus = true;
-        Def.Setting.RemoveProgramChange = false;
+            Def.Setting.LyricAdustment = true;
+            Def.Setting.LyricPaddingPlus = true;
+            Def.Setting.RemoveProgramChange = false;
 
-        midiData.FilePath = pathVocal;
-        SaveMidiData(midiData);
+            midiData.FilePath = pathVocal;
+            SaveMidiData(midiData);
+        }
 
         // .srt, .txt
         if (midiData.Origine?.Tracks.FirstOrDefault(x => x is XFKaraokeMessage) is XFKaraokeMessage karaoke)
         {
-            var srt = karaoke.GetSRT(Def.Setting.SRTOffset, Def.Setting.SRTRemoveComment);
-            if (srt.Length > 0)
+            if (srttext)
             {
-                File.WriteAllText(pathSRT, srt);
+                var srt = karaoke.GetSRT(Def.Setting.SRTOffset, Def.Setting.SRTRemoveComment);
+                if (srt.Length > 0)
+                {
+                    File.WriteAllText(pathSRT, srt);
+                }
             }
 
-            var txt = karaoke.Lyric;
-            if (txt.Length > 0)
+            if (lyrictext)
             {
-                File.WriteAllText(pathTEXT, txt);
+                var txt = karaoke.Lyric;
+                if (txt.Length > 0)
+                {
+                    File.WriteAllText(pathTEXT, txt);
+                }
             }
         }
 
