@@ -367,62 +367,95 @@ public class SMFConverter
 
     private static void SplitMultiTimber(MidiData midiData, ref MidiData result)
     {
-        foreach (var track in midiData.Tracks)
+        try
         {
-            var newtrack = result.NewTrack<Track>();
-            var ch = (byte)(track.IsDrum ? 10 : 1);
 
-            if (track.Events.FirstOrDefault(x => x.Message is ProgramChange) is MidiEvent pcev)
+            //
+            var ctrltrack = result.NewTrack<Track>();
+            ctrltrack.EventInsertHead(new MidiEvent(ctrltrack) { AbsoluteTick = 0, Message = new SequenceTrackName($"#Control#") });
+
+            foreach (var midiEvent in midiData.GetAllEvents())
             {
-                var pc = (ProgramChange)pcev.Message;
-                newtrack.EventAdd(pcev with { Message = pc with { Ch = ch } });
+                if (midiEvent.Message is ChannelMessage) continue;
+
+                if (midiEvent.Message is Tempo && !ctrltrack.Events.Any(x => x.Message is Tempo && x.AbsoluteTick == midiEvent.AbsoluteTick))
+                {
+                    ctrltrack.EventAdd(midiEvent with { });
+                }
+                else if (midiEvent.Message is KeySignature && !ctrltrack.Events.Any(x => x.Message is KeySignature && x.AbsoluteTick == midiEvent.AbsoluteTick))
+                {
+                    ctrltrack.EventAdd(midiEvent with { });
+                }
+                else if (midiEvent.Message is TimeSignature && !ctrltrack.Events.Any(x => x.Message is TimeSignature && x.AbsoluteTick == midiEvent.AbsoluteTick))
+                {
+                    ctrltrack.EventAdd(midiEvent with { });
+                }
             }
 
-            PitchBend? lastpitchbend = null;
+            result.AddTrack(ctrltrack);
 
-            foreach (var midiEvent in track.Events)
+            //
+            foreach (var track in midiData.Tracks)
             {
-                if (midiEvent.Message is ChannelNoteMessage noteMessage)
+                var newtrack = result.NewTrack<Track>();
+                var ch = (byte)(track.IsDrum ? 10 : 1);
+
+                if (track.Events.FirstOrDefault(x => x.Message is ProgramChange) is MidiEvent pcev)
                 {
-                    newtrack.EventAdd(midiEvent with { Message = noteMessage with { Ch = ch } }); 
+                    var pc = (ProgramChange)pcev.Message;
+                    newtrack.EventAdd(pcev with { Message = pc with { Ch = ch } });
                 }
-                else if (midiEvent.Message is SequenceTrackName sequenceTrackName)
+
+                PitchBend? lastpitchbend = null;
+
+                foreach (var midiEvent in track.Events)
                 {
-                    newtrack.EventAdd(midiEvent with {  });
-                }
-                else if (midiEvent.Message is PitchBend pb)
-                {
-                    if (lastpitchbend == null || lastpitchbend.Value != pb.Value)
+                    if (midiEvent.Message is ChannelNoteMessage noteMessage)
                     {
-                        newtrack.EventAdd(midiEvent with { Message = pb with { Ch = ch } });
-                        lastpitchbend = pb;
+                        newtrack.EventAdd(midiEvent with { Message = noteMessage with { Ch = ch } });
+                    }
+                    else if (midiEvent.Message is PitchBend pb)
+                    {
+                        if (lastpitchbend == null || lastpitchbend.Value != pb.Value)
+                        {
+                            newtrack.EventAdd(midiEvent with { Message = pb with { Ch = ch } });
+                            lastpitchbend = pb;
+                        }
+                    }
+                    else if (midiEvent.Message is ControlChange cc)
+                    {
+                        if (cc.CtrlType == CtrlType.Expression)
+                        {
+                            newtrack.EventAdd(midiEvent with { Message = cc with { Ch = ch } });
+                        }
                     }
                 }
-                else if (midiEvent.Message is ControlChange cc)
+
+                if (track.Events.FirstOrDefault(x => x.Message is SequenceTrackName) is MidiEvent seqtr)
                 {
-                    if (cc.CtrlType == CtrlType.Expression)
+                    newtrack.EventInsertHead(new MidiEvent(newtrack) { AbsoluteTick = 0, Message = seqtr.Message with { } });
+                }
+                else
+                {
+                    if (newtrack.Events.FirstOrDefault(x => x.Message is ProgramChange)?.InstrumentInfo is InstInfo info)
                     {
-                        newtrack.EventAdd(midiEvent with { Message = cc with { Ch = ch } });
+                        var name = InstMap.GetInstName(info, track.IsDrum);
+                        var seqname = new SequenceTrackName(name);
+                        var ev = new MidiEvent(newtrack) { AbsoluteTick = 0, Message = seqname };
+                        newtrack.EventInsertHead(ev);
                     }
                 }
+
+                result.AddTrack(newtrack);
             }
 
-            if (!newtrack.Events.Any(x => x.Message is SequenceTrackName))
-            {
-                if (newtrack.Events.FirstOrDefault(x => x.Message is ProgramChange)?.InstrumentInfo is InstInfo info)
-                {
-                    var name = InstMap.GetInstName(info, track.IsDrum);
-                    var seqname = new SequenceTrackName(name);
-                    var ev = new MidiEvent(newtrack) { AbsoluteTick = 0, Message = seqname };
-                    newtrack.EventInsertHead(ev);
-                }
-            }
-
-            result.AddTrack(newtrack);
+            result.Organize();
+            result.Tracks.ToList().ForEach(tr => tr.SetFilter(Def.InitFilter.Select(x => x.Key).ToArray()));
         }
+        catch (Exception ex)
+        {
 
-        result.Organize();
-        result.Tracks.ToList().ForEach(tr => tr.SetFilter(Def.InitFilter.Select(x => x.Key).ToArray()));
+        }
     }
 
     private static ITrack GetCodeTrack(MidiData midiData, ref MidiData result, List<MidiEvent> events)
@@ -483,6 +516,8 @@ public class SMFConverter
             FilePath = midiData.FilePath,
             Division = midiData.Division,
         };
+
+        if (result.Tracks.Count() == 0) return;
 
         foreach (ITrack tr in tracks)
         {
