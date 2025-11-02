@@ -517,8 +517,6 @@ public class SMFConverter
             Division = midiData.Division,
         };
 
-        if (result.Tracks.Count() == 0) return;
-
         foreach (ITrack tr in tracks)
         {
             if (filter)
