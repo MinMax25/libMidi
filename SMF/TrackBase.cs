@@ -143,7 +143,7 @@ public abstract class TrackBase
         //InstInfo
         InstInfo =
             (Parent?.ConvertType == ConvertType.Instrument || Parent?.ConvertType == ConvertType.MultiTimber)
-            ? Events.FirstOrDefault(x => x.InstrumentInfo != null)?.InstrumentInfo 
+            ? Events.FirstOrDefault(x => x.InstrumentInfo != null)?.InstrumentInfo
             : null;
 
         if (Channel == 10 && Parent != null && InstInfo == null)
