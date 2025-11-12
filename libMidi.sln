@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libMidi", "libMidi.csproj", "{A00842D3-5558-AE16-65CC-5EC5D1AEE555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "..\libQB\UnitTest\UnitTest.csproj", "{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,14 +21,6 @@ Global
 		{A00842D3-5558-AE16-65CC-5EC5D1AEE555}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A00842D3-5558-AE16-65CC-5EC5D1AEE555}.Release|x64.ActiveCfg = Release|x64
 		{A00842D3-5558-AE16-65CC-5EC5D1AEE555}.Release|x64.Build.0 = Release|x64
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Debug|x64.Build.0 = Debug|Any CPU
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Release|x64.ActiveCfg = Release|Any CPU
-		{EC6DE9A8-C151-4BBB-83C5-7ADF3580AE4B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
