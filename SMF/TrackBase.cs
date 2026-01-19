@@ -291,7 +291,7 @@ public abstract class TrackBase
             //
             if (SMFConverter.Def.Setting.XFStyleConvert)
             {
-                if (ev.Message is XFStyleRehearsalMark rehearsalMark)
+                if (ev.Message is XFStyleRehearsalMark rehearsalMark && Filter.ContainsValue(typeof(libMidi.Messages.Marker)))
                 {
                     _FilterdEvents.Add(ev with { Message = new Marker(rehearsalMark.Section()) });
                 }
