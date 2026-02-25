@@ -119,15 +119,18 @@ public abstract class TrackBase
 
     private Lyric? MatchLyric(IMidiEvent ev)
     {
-        if (Parent?.LyricTrack == null) return null;
+        if (Parent?.LyricTrack == null)
+            return null;
 
         var ly = Parent.LyricTrack.Events.FirstOrDefault(x => x.AbsoluteTick == ev.AbsoluteTick - 1 || x.AbsoluteTick == ev.AbsoluteTick)?.Message as Lyric;
 
-        if (ly == null) return null;
+        if (ly == null)
+            return null;
 
         string val = ly.Text.Replace("<", string.Empty).Replace("/", string.Empty).Replace(">", string.Empty).Replace("^", string.Empty).Trim();
 
-        if (string.IsNullOrWhiteSpace(val)) return null;
+        if (string.IsNullOrWhiteSpace(val))
+            return null;
 
         return ly with { Data = Encoding.UTF8.GetBytes(val) };
     }
@@ -189,7 +192,8 @@ public abstract class TrackBase
     public void EventAdd(MidiEvent ev)
     {
         seqnum++;
-        if (ev.AbsoluteTick - abstick is long delta && delta < 0) throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+        if (ev.AbsoluteTick - abstick is long delta && delta < 0)
+            throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
 
         var addev = ev with { Parent = this, Seqnum = seqnum, DeltaTick = delta, Message = ev.Message with { } };
 
@@ -212,7 +216,8 @@ public abstract class TrackBase
     public void EventAddRange(IEnumerable<MidiEvent> events, bool ignoreEOT = true) =>
         events.OrderBy(x => x.AbsoluteTick).ThenBy(x => x.Seqnum).ToList().ForEach(ev =>
         {
-            if (!ignoreEOT | ev.Message is not EndOfTrack) EventAdd(ev);
+            if (!ignoreEOT | ev.Message is not EndOfTrack)
+                EventAdd(ev);
         });
 
     public void EventInsertHead(MidiEvent ev) => _Events.Insert(0, ev with { Message = ev.Message with { } });
@@ -234,7 +239,8 @@ public abstract class TrackBase
 
     public void DoFilter()
     {
-        if (Parent is null) return;
+        if (Parent is null)
+            return;
 
         _FilterdEvents.Clear();
 
@@ -281,7 +287,8 @@ public abstract class TrackBase
             // Option Remove ProgramChange
             if (SMFConverter.Def.Setting.RemoveProgramChange)
             {
-                if (ev.Message is ProgramChange) continue;
+                if (ev.Message is ProgramChange)
+                    continue;
 
                 if (ev.Message is ControlChange rmoveCC &&
                     rmoveCC.CtrlType is CtrlType.BankMSB or CtrlType.BankLSB)
@@ -311,7 +318,8 @@ public abstract class TrackBase
                             word = Regex.Replace(word, @"\[.+\]", string.Empty);
                             word = Regex.Replace(word, @"\[.+", string.Empty);
                             word = Regex.Replace(word, @".+\]", string.Empty);
-                            if (word.Length == 0) word = "+";
+                            if (word.Length == 0)
+                                word = "+";
                         }
                         _FilterdEvents.Add(ev with { Message = new Lyric(word) });
                         lastWord = word;

@@ -10,7 +10,8 @@ public static class Pitch
 
     public static string NoteName(this byte pitch)
     {
-        if (pitch < 0 || pitch > 127) return string.Empty;
+        if (pitch < 0 || pitch > 127)
+            return string.Empty;
         int note = pitch % 12;
         int oct = (pitch - note) / 12 - (Method == PitchNoteMethod.YAMAHA ? 2 : 1);
         return $"{NoteNames[note]}{oct}";

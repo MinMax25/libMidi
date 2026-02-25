@@ -30,7 +30,8 @@ public static class SMFLoader
             // 応急処置
         }
 
-        foreach (ITrack track in midiData.Tracks) track.SetFilter(SMFConverter.Def.InitFilter.Select(x => x.Key).ToArray());
+        foreach (ITrack track in midiData.Tracks)
+            track.SetFilter(SMFConverter.Def.InitFilter.Select(x => x.Key).ToArray());
 
         midiData.Organize();
 
@@ -109,7 +110,8 @@ public static class SMFLoader
         while (MidiEventReader(reader, track, ref absoluteTick) is MidiEvent midiEvent)
         {
             track.EventAdd(midiEvent);
-            if (reader.TotalBytesRead >= trackLenght) break;
+            if (reader.TotalBytesRead >= trackLenght)
+                break;
         }
 
         return track;

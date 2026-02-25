@@ -73,11 +73,13 @@ public record XFStyleCode
         byte nnnn = (byte)(cnote & 0x0F);
         StringBuilder codename = new StringBuilder();
 
-        if (cnote == 0x7f) return string.Empty;
+        if (cnote == 0x7f)
+            return string.Empty;
 
         codename.Append(note.Keys.ToList()[nnnn]);
         codename.Append(sf[fff]);
-        if (ctype != 0x00 && ctype != 0x7f) codename.Append(code.Keys.ToList()[ctype]);
+        if (ctype != 0x00 && ctype != 0x7f)
+            codename.Append(code.Keys.ToList()[ctype]);
 
         return codename.ToString();
     }

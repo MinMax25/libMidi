@@ -23,7 +23,8 @@ public abstract record XFStyle
             var sample = t.GetCustomAttribute<XFStyleAttribute>();
             var mask = t.GetCustomAttribute<XFStyleMaskAttribute>();
 
-            if (sample == null || sample.Data.Length != data.Length) continue;
+            if (sample == null || sample.Data.Length != data.Length)
+                continue;
 
             if (mask == null)
             {
