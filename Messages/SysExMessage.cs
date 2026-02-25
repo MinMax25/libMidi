@@ -19,7 +19,8 @@ public record SysExMessage
             var sample = t.GetExclusiveAttribute();
             var mask = t.GetExclusiveMaskAttribute();
 
-            if (sample == null || sample.Data.Length != data.Length) continue;
+            if (sample == null || sample.Data.Length != data.Length)
+                continue;
 
             if (mask == null)
             {

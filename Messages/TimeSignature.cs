@@ -10,8 +10,10 @@ public record TimeSignature
 {
     public TimeSignature(byte nn, byte dd)
     {
-        if (nn == 0) throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
-        if (dd == 0) throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+        if (nn == 0)
+            throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+        if (dd == 0)
+            throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
 
         NN = nn;
         DD = dd;

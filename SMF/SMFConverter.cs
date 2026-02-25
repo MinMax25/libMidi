@@ -140,7 +140,8 @@ public class SMFConverter
         Def.Setting.FilterKeys.AddRange(Def.Filter.Keys);
 
         var rootPath = Path.Combine(ConverterSetting.Root, CONFIG_ROOT);
-        if (!Directory.Exists(rootPath)) Directory.CreateDirectory(rootPath);
+        if (!Directory.Exists(rootPath))
+            Directory.CreateDirectory(rootPath);
 
         var options = new JsonSerializerOptions
         {
@@ -191,21 +192,24 @@ public class SMFConverter
             .ToList().ForEach(x =>
             {
                 string? name = x.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
-                if (name != null) Def.FilterTargetList.Add(name, x);
+                if (name != null)
+                    Def.FilterTargetList.Add(name, x);
             });
 
         Enum.GetValues<SysExType>()
             .ToList().ForEach(x =>
             {
                 string? name = x.GetDisplayAttribute()?.Name ?? $"{x}";
-                if (name != null) Def.FilterTargetList.Add(name, x);
+                if (name != null)
+                    Def.FilterTargetList.Add(name, x);
             });
 
         Enum.GetValues<CtrlType>()
             .ToList().ForEach(x =>
             {
                 string? name = Enum.GetName(x);
-                if (name != null) Def.FilterTargetList.Add(name, x);
+                if (name != null)
+                    Def.FilterTargetList.Add(name, x);
             });
 
         Def.InitFilter.Clear();
@@ -248,7 +252,8 @@ public class SMFConverter
 
         foreach (var ev in midiData.GetAllEvents().OrderBy(x => x.AbsoluteTick).ThenBy(x => x.Channel).ThenBy(x => x.Seqnum))
         {
-            if (ev.Message is EndOfTrack) continue;
+            if (ev.Message is EndOfTrack)
+                continue;
             track.EventAdd(ev with { Parent = track, Message = ev.Message with { } });
         }
         track.EventAdd(0, new EndOfTrack());
@@ -299,7 +304,8 @@ public class SMFConverter
                         result.AddTrack(track);
                         track = result.NewTrack<Track>();
                     }
-                    while (buff.Count != 0) track.EventAdd(buff.Dequeue());
+                    while (buff.Count != 0)
+                        track.EventAdd(buff.Dequeue());
                     needQueue = false;
                     buff.Clear();
                 }
@@ -309,7 +315,8 @@ public class SMFConverter
 
             if (buff.Any(x => x.Message is ProgramChange))
             {
-                while (buff.Count != 0) track.EventAdd(buff.Dequeue());
+                while (buff.Count != 0)
+                    track.EventAdd(buff.Dequeue());
             }
             buff.Clear();
 
@@ -376,7 +383,8 @@ public class SMFConverter
 
             foreach (var midiEvent in midiData.GetAllEvents())
             {
-                if (midiEvent.Message is ChannelMessage) continue;
+                if (midiEvent.Message is ChannelMessage)
+                    continue;
 
                 if (midiEvent.Message is Tempo && !ctrltrack.Events.Any(x => x.Message is Tempo && x.AbsoluteTick == midiEvent.AbsoluteTick))
                 {
@@ -509,7 +517,8 @@ public class SMFConverter
 
         var tracks = midiData.Tracks.Where(x => x.Output).ToArray();
 
-        if (tracks.Length == 0) throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+        if (tracks.Length == 0)
+            throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
 
         MidiData result = new()
         {

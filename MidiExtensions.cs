@@ -198,7 +198,8 @@ public static class MidiExtensions
 
     public static bool WhichCtrlType(this MidiEvent target, CtrlType ctrlType)
     {
-        if (target.Message is not ControlChange cc) return false;
+        if (target.Message is not ControlChange cc)
+            return false;
         return cc.CtrlType == ctrlType;
     }
 
@@ -211,7 +212,8 @@ public static class MidiExtensions
 
     public static bool IsAlphaNumeric(string str)
     {
-        if (str == null) return false;
+        if (str == null)
+            return false;
         return new Regex("^[ -~]*$").IsMatch(str);
     }
 }

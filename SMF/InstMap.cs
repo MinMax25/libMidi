@@ -27,7 +27,8 @@ public static class InstMap
     {
         string rootPath = path ?? Path.Combine(ConverterSetting.Root, INSTFILE_ROOT);
 
-        if (!Directory.Exists(rootPath)) Directory.CreateDirectory(rootPath);
+        if (!Directory.Exists(rootPath))
+            Directory.CreateDirectory(rootPath);
 
         Dictionary<MidiStd, string> files = new()
         {
@@ -42,7 +43,8 @@ public static class InstMap
             if (File.Exists(filePath))
             {
                 var obj = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, Dictionary<string, string>>>>(File.ReadAllText(filePath));
-                if (obj != null) Map.Add(file.Key, obj);
+                if (obj != null)
+                    Map.Add(file.Key, obj);
             }
         }
     }
@@ -259,7 +261,8 @@ public static class InstMap
 
     private static string? GetDrumNoteNameGM(InstInfo inst, byte pitch)
     {
-        if (!Map.ContainsKey(MidiStd.GM)) return null;
+        if (!Map.ContainsKey(MidiStd.GM))
+            return null;
 
         var map = Map[MidiStd.GM];
 
@@ -280,7 +283,8 @@ public static class InstMap
 
     private static string? GetDrumNoteNameGS(InstInfo inst, byte pitch)
     {
-        if (!Map.ContainsKey(MidiStd.GS)) return null;
+        if (!Map.ContainsKey(MidiStd.GS))
+            return null;
 
         var map = Map[MidiStd.GS];
 
@@ -301,7 +305,8 @@ public static class InstMap
 
     private static string? GetDrumNoteNameXG(InstInfo inst, byte pitch)
     {
-        if (!Map.ContainsKey(MidiStd.XG)) return null;
+        if (!Map.ContainsKey(MidiStd.XG))
+            return null;
 
         var map = Map[MidiStd.XG];
 

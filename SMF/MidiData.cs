@@ -171,9 +171,12 @@ public class MidiData
             foreach (var e in GetAllExclusiveEvents(SysExType.GSUseForRhythmPart).ToArray())
             {
                 int part = e.Message.Data[5] & 0xf;
-                if (part == 0) continue;
-                if (part > 10) part++;
-                if (!DrumChannel.Contains(part)) _DrumChannel.Add(part);
+                if (part == 0)
+                    continue;
+                if (part > 10)
+                    part++;
+                if (!DrumChannel.Contains(part))
+                    _DrumChannel.Add(part);
             }
         }
     }
@@ -193,7 +196,8 @@ public class MidiData
 
         foreach (var item in GetAllEvents<Tempo>())
         {
-            if (item.Message is not Tempo tempo) continue;
+            if (item.Message is not Tempo tempo)
+                continue;
             TempoMap.Add(new TempoItem { Tick = item.AbsoluteTick, BPM = tempo.BPM });
         }
 
