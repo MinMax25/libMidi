@@ -7,54 +7,74 @@ namespace libMidi.SMF;
 
 public static class SMFLoader
 {
+    #region Fields
+
     private static readonly List<byte[]> HeaderIDList = [Chunk.HEADER_ID];
 
     private static readonly List<byte[]> TrackIDList = [Chunk.TRACK_ID, Chunk.XFID_ID, Chunk.XFKM_ID];
 
+    #endregion
+
+    #region Methods
+
+    #region General
+
     public static MidiData Load(string fileName)
     {
-        using ISMFReader reader = new SMFReader(fileName);
-
-        MidiData midiData = CreateMidiData(reader);
-
-        midiData.FilePath = fileName;
-
-        try
+        using (ISMFReader reader = new SMFReader(fileName))
         {
-            while (!reader.EOF)
-                midiData.AddTrack(TrackReader(reader, midiData));
+            MidiData midiData = CreateMidiData(reader);
+
+            midiData.FilePath = fileName;
+
+            try
+            {
+                while (!reader.EOF)
+                {
+                    midiData.AddTrack(TrackReader(reader, midiData));
+                }
+            }
+            catch
+            {
+                // リアルタイムメッセージが紛れ込んだ場合の対処未実装のため
+                // 応急処置
+            }
+
+            foreach (ITrack track in midiData.Tracks)
+            {
+                track.SetFilter(SMFConverter.Def.InitFilter.Select(x => x.Key).ToArray());
+            }
+
+            midiData.Organize();
+
+            return midiData;
         }
-        catch
-        {
-            // リアルタイムメッセージが紛れ込んだ場合の対処未実装のため
-            // 応急処置
-        }
-
-        foreach (ITrack track in midiData.Tracks)
-            track.SetFilter(SMFConverter.Def.InitFilter.Select(x => x.Key).ToArray());
-
-        midiData.Organize();
-
-        return midiData;
     }
 
     public static bool Load(MidiData midiData)
     {
         try
         {
-            using ISMFReader reader = new SMFReader(midiData.FilePath);
-            MidiData result = CreateMidiData(reader);
-
-            while (!reader.EOF)
-                midiData.AddTrack(TrackReader(reader, midiData));
-
-            midiData.Division = result.Division;
-            foreach (var track in result.Tracks)
+            using (ISMFReader reader = new SMFReader(midiData.FilePath))
             {
-                midiData.AddTrack(track);
+                MidiData result = CreateMidiData(reader);
+
+                while (!reader.EOF)
+                {
+                    midiData.AddTrack(TrackReader(reader, midiData));
+                }
+
+                midiData.Division = result.Division;
+
+                foreach (var track in result.Tracks)
+                {
+                    midiData.AddTrack(track);
+                }
+
+                midiData.Organize();
+
+                return true;
             }
-            midiData.Organize();
-            return true;
         }
         catch
         {
@@ -68,8 +88,11 @@ public static class SMFLoader
 
         _ = GetChunkDataLength(reader);
 
+        // format / tracks
         _ = reader.ReadShort();
         _ = reader.ReadShort();
+
+        // division
         short data3 = reader.ReadShort();
 
         return new MidiData(data3);
@@ -82,7 +105,9 @@ public static class SMFLoader
         foreach (var id in idList)
         {
             if (id.SequenceEqual(compare))
+            {
                 return id;
+            }
         }
 
         throw new ArgumentException("Chunk ID not found");
@@ -93,7 +118,9 @@ public static class SMFLoader
         byte[] buff = reader.ReadBytes(Chunk.LENGTH_SIZE);
 
         if (BitConverter.IsLittleEndian)
+        {
             Array.Reverse(buff);
+        }
 
         return BitConverter.ToInt32(buff);
     }
@@ -107,11 +134,19 @@ public static class SMFLoader
 
         reader.TotalBytesRead = 0;
 
-        while (MidiEventReader(reader, track, ref absoluteTick) is MidiEvent midiEvent)
+        while (true)
         {
-            track.EventAdd(midiEvent);
+            MidiEvent? midiEvent = MidiEventReader(reader, track, ref absoluteTick);
+
+            if (midiEvent != null)
+            {
+                track.EventAdd(midiEvent);
+            }
+
             if (reader.TotalBytesRead >= trackLenght)
+            {
                 break;
+            }
         }
 
         return track;
@@ -122,11 +157,18 @@ public static class SMFLoader
         byte[] id = FindChunkID(reader, TrackIDList);
 
         if (id.SequenceEqual(Chunk.XFID_ID))
+        {
             return midiData.NewTrack<XFInfomationHeader>();
+        }
+
         if (id.SequenceEqual(Chunk.XFKM_ID))
+        {
             return midiData.NewTrack<XFKaraokeMessage>();
+        }
         else
+        {
             return midiData.NewTrack<Track>();
+        }
     }
 
     private static MidiEvent MidiEventReader(ISMFReader reader, ITrack track, ref long absoluteTick)
@@ -135,7 +177,10 @@ public static class SMFLoader
 
         absoluteTick += Val;
 
-        var midiEvent = new MidiEvent(track) { AbsoluteTick = absoluteTick };
+        var midiEvent = new MidiEvent(track)
+        {
+            AbsoluteTick = absoluteTick
+        };
 
         midiEvent.Message = GetMidiMessage(reader, midiEvent);
 
@@ -144,11 +189,10 @@ public static class SMFLoader
 
     private static MidiMessage GetMidiMessage(ISMFReader reader, MidiEvent midiEvent)
     {
+        byte byte1st = reader.ReadByte();
+
         // fix running status
-        byte status =
-            reader.ReadByte() is byte byte1st & byte1st.IsMSBOn()
-            ? byte1st
-            : LastStatusByte(midiEvent.Parent);
+        byte status = byte1st.IsMSBOn() ? byte1st : LastStatusByte(midiEvent.Parent);
 
         // status != byte1stの場合はランニングステータス
         return ParseMidiMessage(reader, status, byte1st);
@@ -165,36 +209,40 @@ public static class SMFLoader
         return message.StatusByte;
     }
 
+    #endregion
+
     #region Message Parser
 
     private static MidiMessage ParseMidiMessage(ISMFReader reader, byte status, byte byte1st)
     {
         // System Message
-        if (status == 0xf0)
+        if (status == 0xf0 || status == 0xf7)
+        {
             return ParseSystemExMessage(reader);
-
-        if (status == 0xf7)
-            return ParseSystemExMessage(reader);
+        }
 
         if (status == 0xff)
+        {
             return ParseMetaMessage(reader);
+        }
 
         if (status.Upper4bit() == 0xf0)
+        {
             throw new NotImplementedException($"{MethodBase.GetCurrentMethod()}");
+        }
 
         // Channel Message
-        return
-            status.Upper4bit() switch
-            {
-                0x80 => ParseNoteOff(reader, status, byte1st),
-                0x90 => ParseNoteOn(reader, status, byte1st),
-                0xa0 => ParsePolyphonicKeyPressure(reader, status, byte1st),
-                0xb0 => ParseControlChange(reader, status, byte1st),
-                0xc0 => ParseProgramChange(reader, status, byte1st),
-                0xd0 => ParseAfterTouch(reader, status, byte1st),
-                0xe0 => ParsePitchBend(reader, status, byte1st),
-                _ => throw new ArgumentException($"{MethodBase.GetCurrentMethod()}"),
-            };
+        return status.Upper4bit() switch
+        {
+            0x80 => ParseNoteOff(reader, status, byte1st),
+            0x90 => ParseNoteOn(reader, status, byte1st),
+            0xa0 => ParsePolyphonicKeyPressure(reader, status, byte1st),
+            0xb0 => ParseControlChange(reader, status, byte1st),
+            0xc0 => ParseProgramChange(reader, status, byte1st),
+            0xd0 => ParseAfterTouch(reader, status, byte1st),
+            0xe0 => ParsePitchBend(reader, status, byte1st),
+            _ => throw new ArgumentException($"{MethodBase.GetCurrentMethod()}"),
+        };
     }
 
     #region System Exclusive Message Parser
@@ -215,33 +263,32 @@ public static class SMFLoader
     {
         MetaType metaType = (MetaType)reader.ReadByte();
 
-        return
-            metaType switch
-            {
-                // Text Base
-                MetaType.MetaText => ParseTextBaseMessage<MetaText>(reader),
-                MetaType.Copyright => ParseTextBaseMessage<CopyrightNotice>(reader),
-                MetaType.SequenceTrackName => ParseTextBaseMessage<SequenceTrackName>(reader),
-                MetaType.InstrumentName => ParseTextBaseMessage<InstrumentName>(reader),
-                MetaType.Lyric => ParseTextBaseMessage<Lyric>(reader),
-                MetaType.Marker => ParseTextBaseMessage<Marker>(reader),
-                MetaType.CuePoint => ParseTextBaseMessage<CuePoint>(reader),
-                MetaType.ProgramName => ParseTextBaseMessage<ProgramName>(reader),
-                MetaType.DeviceName => ParseTextBaseMessage<DeviceName>(reader),
-                MetaType.ChannelPrefix => ParseTextBaseMessage<ChannelPrefix>(reader),
+        return metaType switch
+        {
+            // Text Base
+            MetaType.MetaText => ParseTextBaseMessage<MetaText>(reader),
+            MetaType.Copyright => ParseTextBaseMessage<CopyrightNotice>(reader),
+            MetaType.SequenceTrackName => ParseTextBaseMessage<SequenceTrackName>(reader),
+            MetaType.InstrumentName => ParseTextBaseMessage<InstrumentName>(reader),
+            MetaType.Lyric => ParseTextBaseMessage<Lyric>(reader),
+            MetaType.Marker => ParseTextBaseMessage<Marker>(reader),
+            MetaType.CuePoint => ParseTextBaseMessage<CuePoint>(reader),
+            MetaType.ProgramName => ParseTextBaseMessage<ProgramName>(reader),
+            MetaType.DeviceName => ParseTextBaseMessage<DeviceName>(reader),
+            MetaType.ChannelPrefix => ParseTextBaseMessage<ChannelPrefix>(reader),
 
-                // Other
-                MetaType.SequenceNumber => ParseSequenceNumber(reader),
-                MetaType.PortPrefix => ParsePortPrefixEvent(reader),
-                MetaType.EndOfTrack => ParseEndOfTrack(reader),
-                MetaType.Tempo => ParseTempo(reader),
-                MetaType.SmpteOffset => ParseSmpteOffset(reader),
-                MetaType.TimeSignature => ParseTimeSignature(reader),
-                MetaType.KeySignature => ParseKeySignature(reader),
-                MetaType.SequencerSpecific => ParseSequencerSpecificEvent(reader),
+            // Other
+            MetaType.SequenceNumber => ParseSequenceNumber(reader),
+            MetaType.PortPrefix => ParsePortPrefixEvent(reader),
+            MetaType.EndOfTrack => ParseEndOfTrack(reader),
+            MetaType.Tempo => ParseTempo(reader),
+            MetaType.SmpteOffset => ParseSmpteOffset(reader),
+            MetaType.TimeSignature => ParseTimeSignature(reader),
+            MetaType.KeySignature => ParseKeySignature(reader),
+            MetaType.SequencerSpecific => ParseSequencerSpecificEvent(reader),
 
-                _ => throw new NotImplementedException($"{MethodBase.GetCurrentMethod()}, MetaType:{metaType}"),
-            };
+            _ => throw new NotImplementedException($"{MethodBase.GetCurrentMethod()}, MetaType:{metaType}"),
+        };
     }
 
     #region Text Base
@@ -255,7 +302,9 @@ public static class SMFLoader
         byte[] utf8 = data.EncodeUTF8();
 
         if (Activator.CreateInstance(typeof(T), [utf8]) is MidiMessage msg)
+        {
             return msg;
+        }
 
         throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
     }
@@ -285,12 +334,17 @@ public static class SMFLoader
         byte[] bytes = reader.ReadBytes(3);
 
         if (BitConverter.IsLittleEndian)
+        {
             Array.Reverse(bytes);
+        }
 
+        // 3byte読み込み後のパディング処理
         float val = BitConverter.ToInt32(bytes.Concat(new byte[] { 0 }).ToArray());
 
         if (val == 0)
+        {
             throw new DivideByZeroException($"{MethodBase.GetCurrentMethod()}");
+        }
 
         return new Tempo(60000000 / val);
     }
@@ -404,7 +458,7 @@ public static class SMFLoader
 
     private static MidiMessage ParseNoteOff(ISMFReader reader, byte status, byte byte1st)
     {
-        byte data1 = status == byte1st ? reader.ReadByte() : byte1st;
+        byte data1 = (status == byte1st) ? reader.ReadByte() : byte1st;
         byte data2 = reader.ReadByte();
 
         return new NoteOff(status.GetChannel(), data1, data2);
@@ -412,7 +466,7 @@ public static class SMFLoader
 
     private static MidiMessage ParseNoteOn(ISMFReader reader, byte status, byte byte1st)
     {
-        byte data1 = status == byte1st ? reader.ReadByte() : byte1st;
+        byte data1 = (status == byte1st) ? reader.ReadByte() : byte1st;
         byte data2 = reader.ReadByte();
 
         return new NoteOn(status.GetChannel(), data1, data2);
@@ -420,7 +474,7 @@ public static class SMFLoader
 
     private static MidiMessage ParsePolyphonicKeyPressure(ISMFReader reader, byte status, byte byte1st)
     {
-        byte data1 = status == byte1st ? reader.ReadByte() : byte1st;
+        byte data1 = (status == byte1st) ? reader.ReadByte() : byte1st;
         byte data2 = reader.ReadByte();
 
         return new PolyphonicKeyPressure(status.GetChannel(), data1, data2);
@@ -428,7 +482,7 @@ public static class SMFLoader
 
     private static MidiMessage ParseControlChange(ISMFReader reader, byte status, byte byte1st)
     {
-        byte data1 = status == byte1st ? reader.ReadByte() : byte1st;
+        byte data1 = (status == byte1st) ? reader.ReadByte() : byte1st;
         byte data2 = reader.ReadByte();
 
         return new ControlChange(status.GetChannel(), (CtrlType)data1, data2);
@@ -436,25 +490,27 @@ public static class SMFLoader
 
     private static MidiMessage ParseProgramChange(ISMFReader reader, byte status, byte byte1st)
     {
-        byte data1 = status == byte1st ? reader.ReadByte() : byte1st;
+        byte data1 = (status == byte1st) ? reader.ReadByte() : byte1st;
 
         return new ProgramChange(status.GetChannel(), data1);
     }
 
     private static MidiMessage ParseAfterTouch(ISMFReader reader, byte status, byte byte1st)
     {
-        byte data1 = status == byte1st ? reader.ReadByte() : byte1st;
+        byte data1 = (status == byte1st) ? reader.ReadByte() : byte1st;
 
         return new AfterTouch(status.GetChannel(), data1);
     }
 
     private static MidiMessage ParsePitchBend(ISMFReader reader, byte status, byte byte1st)
     {
-        byte data1 = status == byte1st ? reader.ReadByte() : byte1st;
+        byte data1 = (status == byte1st) ? reader.ReadByte() : byte1st;
         byte data2 = reader.ReadByte();
 
         return new PitchBend(status.GetChannel(), (short)(data2 * 128 + data1 - 8192));
     }
+
+    #endregion
 
     #endregion
 
