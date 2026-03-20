@@ -5,19 +5,38 @@ using libMidi.Messages;
 
 namespace libMidi.SMF;
 
-public class XFKaraokeMessage
-    : TrackBase
+public class XFKaraokeMessage : TrackBase
 {
-    public XFKaraokeMessage(MidiData midiData) : base(midiData) { }
+    #region Properties
 
-    public override byte[] ChunkID => XFKM_ID;
+    public override byte[] ChunkID
+    {
+        get
+        {
+            return XFKM_ID;
+        }
+    }
+
+    #endregion
+
+    #region ctor
+
+    public XFKaraokeMessage(MidiData midiData) : base(midiData)
+    {
+    }
+
+    #endregion
+
+    #region Methods
+
+    #region General
 
     public string GetSRT(long offset, bool srtRemoveComment)
     {
-        var data = new Dictionary<TimeSpan, string>();
+        Dictionary<TimeSpan, string> data = new Dictionary<TimeSpan, string>();
 
         TimeSpan st = default;
-        var text = new StringBuilder();
+        StringBuilder text = new StringBuilder();
 
         foreach (var item in Events)
         {
@@ -31,13 +50,16 @@ public class XFKaraokeMessage
                         text.Clear();
                         st = default;
                     }
+
                     var str = lyric.Text.Substring(1);
+
                     if (str.Length > 0)
                     {
                         if (st == default)
                         {
                             st = item.Time + TimeSpan.FromMilliseconds(offset);
                         }
+
                         text.Append(str);
                     }
                 }
@@ -47,10 +69,11 @@ public class XFKaraokeMessage
                     {
                         st = item.Time + TimeSpan.FromMilliseconds(offset);
                     }
+
                     text.Append(lyric.Text.Replace(">", "\t").Replace("^", " "));
                 }
             }
-            else if (item.Message is EndOfTrack eof)
+            else if (item.Message is EndOfTrack)
             {
                 AddData(data, st, string.Empty);
             }
@@ -61,18 +84,17 @@ public class XFKaraokeMessage
             AddData(data, st, text.ToString());
         }
 
-        var srt = new StringBuilder();
+        StringBuilder srt = new StringBuilder();
         int count = 1;
 
         var enumerator = data.GetEnumerator();
-
         var t1 = enumerator.Current;
-
-        var sw = false;
+        bool sw = false;
 
         while (enumerator.MoveNext())
         {
             var t2 = enumerator.Current;
+
             if (t1.Value == null)
             {
                 t1 = t2;
@@ -93,6 +115,7 @@ public class XFKaraokeMessage
             srt.Append(" --> ");
             srt.AppendLine(TimeSpanToSrtFormat(t2.Key - TimeSpan.FromMilliseconds(1)));
             srt.AppendLine(t1.Value);
+
             t1 = t2;
             count++;
         }
@@ -119,4 +142,8 @@ public class XFKaraokeMessage
             data.Add(timeSpan, text.Trim());
         }
     }
+
+    #endregion
+
+    #endregion
 }
