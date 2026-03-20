@@ -69,7 +69,7 @@ public class MidiData
 
     #endregion
 
-    public MidiData? Origine { get; set; }
+    public MidiData? Origin { get; set; }
 
     public IEnumerable<ITrack> Tracks
     {
@@ -83,7 +83,7 @@ public class MidiData
     {
         get
         {
-            return Origine?.Tracks.FirstOrDefault(x => x.HasLyric);
+            return Origin?.Tracks.FirstOrDefault(x => x.HasLyric);
         }
     }
 
