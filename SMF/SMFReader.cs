@@ -3,31 +3,56 @@ using libMidi.SMF.interfaces;
 
 namespace libMidi.SMF;
 
-public class SMFReader
-    : ISMFReader
+public class SMFReader : ISMFReader
 {
+    #region Fields
+
+    private int _readPosition;
+
+    #endregion
+
+    #region Properties
+
+    private FileStream Stream { get; set; }
+
+    public bool EOF
+    {
+        get
+        {
+            return Stream.Length <= _readPosition;
+        }
+    }
+
+    public int TotalBytesRead { get; set; }
+
+    #endregion
+
+    #region ctor
+
     public SMFReader(string fileName)
     {
         Stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
     }
 
-    private FileStream Stream { get; set; }
+    #endregion
 
-    private int ReadPosition;
+    #region Methods
 
-    public bool EOF => Stream.Length <= ReadPosition;
-
-    public int TotalBytesRead { get; set; }
+    #region General
 
     public byte[] ReadBytes(int count)
     {
         byte[] buffer = new byte[count];
         int bytesRead = Stream.Read(buffer, 0, count);
-        if (bytesRead != count)
-            throw new EndOfStreamException($"Expected {count} bytes but got {bytesRead}.");
 
-        ReadPosition += bytesRead;
+        if (bytesRead != count)
+        {
+            throw new EndOfStreamException($"Expected {count} bytes but got {bytesRead}.");
+        }
+
+        _readPosition += bytesRead;
         TotalBytesRead += bytesRead;
+
         return buffer;
     }
 
@@ -36,9 +61,11 @@ public class SMFReader
         int value = Stream.ReadByte();
 
         if (value < 0)
+        {
             throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+        }
 
-        ReadPosition++;
+        _readPosition++;
         TotalBytesRead++;
 
         return (byte)value;
@@ -47,8 +74,12 @@ public class SMFReader
     public short ReadShort()
     {
         byte[] buff = ReadBytes(2);
+
         if (BitConverter.IsLittleEndian)
+        {
             Array.Reverse(buff);
+        }
+
         return BitConverter.ToInt16(buff, 0);
     }
 
@@ -61,12 +92,14 @@ public class SMFReader
         {
             value &= 0x7f;
             byte c;
+
             do
             {
                 c = ReadByte();
                 value = (value << 7) + (c & 0x7f);
                 length++;
-            } while ((c & 0x80) != 0);
+            }
+            while ((c & 0x80) != 0);
         }
 
         return (value, length);
@@ -77,4 +110,8 @@ public class SMFReader
         Stream.Dispose();
         GC.SuppressFinalize(this);
     }
+
+    #endregion
+
+    #endregion
 }
