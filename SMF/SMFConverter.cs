@@ -144,14 +144,14 @@ public class SMFConverter
         result.Division = source.Division;
         result.ConvertType = convertType;
 
-        result.Origine = new MidiData(source.Division);
+        result.Origin = new MidiData(source.Division);
 
         foreach (var track in source.Tracks)
         {
-            result.Origine.AddTrack(track);
+            result.Origin.AddTrack(track);
         }
 
-        result.Origine.Organize();
+        result.Origin.Organize();
 
         switch (convertType, source.Format)
         {
@@ -697,7 +697,7 @@ public class SMFConverter
         }
 
         // .srt, .txt
-        if (midiData.Origine?.Tracks.FirstOrDefault(x => x is XFKaraokeMessage) is XFKaraokeMessage karaoke)
+        if (midiData.Origin?.Tracks.FirstOrDefault(x => x is XFKaraokeMessage) is XFKaraokeMessage karaoke)
         {
             if (srttext)
             {
