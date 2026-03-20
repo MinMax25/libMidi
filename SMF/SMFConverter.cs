@@ -13,8 +13,15 @@ namespace libMidi.SMF;
 
 public class SMFConverter
 {
-    const string CONFIG_ROOT = @"Config";
-    const string CONFIG_NAME = @"Config.json";
+    #region Fields
+
+    private const string CONFIG_ROOT = @"Config";
+
+    private const string CONFIG_NAME = @"Config.json";
+
+    private static SMFConverter _Def = null!;
+
+    #endregion
 
     #region Properties
 
@@ -24,56 +31,95 @@ public class SMFConverter
         {
             if (_Def == null)
             {
-                _Def ??= new();
+                _Def ??= new SMFConverter();
                 LoadConfig();
             }
+
             return _Def;
         }
     }
 
-    private static SMFConverter _Def = null!;
-
-    public ConverterSetting Setting { get; private set; } = new();
+    public ConverterSetting Setting { get; private set; } = new ConverterSetting();
 
     #region Filter
 
-    public Dictionary<string, object> Filter { get; } = [];
+    public Dictionary<string, object> Filter { get; } = new Dictionary<string, object>();
 
-    public Dictionary<string, object> FilterTargetList { get; } = [];
+    public Dictionary<string, object> FilterTargetList { get; } = new Dictionary<string, object>();
 
-    public Dictionary<string, object> InitFilter { get; } = [];
+    public Dictionary<string, object> InitFilter { get; } = new Dictionary<string, object>();
 
-    public Dictionary<string, object> InitMeta =>
-        FilterTargetList.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(MetaMessage)))
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> InitMeta
+    {
+        get
+        {
+            return FilterTargetList.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(MetaMessage)))
+                                   .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
-    public Dictionary<string, object> InitChannelVoice =>
-        FilterTargetList.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(ChannelVoiceMessage)))
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> InitChannelVoice
+    {
+        get
+        {
+            return FilterTargetList.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(ChannelVoiceMessage)))
+                                   .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
-    public Dictionary<string, object> InitSysEx =>
-        FilterTargetList.Where(x => x.Value is SysExType)
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> InitSysEx
+    {
+        get
+        {
+            return FilterTargetList.Where(x => x.Value is SysExType)
+                                   .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
-    public Dictionary<string, object> InitControlChange =>
-        FilterTargetList.Where(x => x.Value is CtrlType)
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> InitControlChange
+    {
+        get
+        {
+            return FilterTargetList.Where(x => x.Value is CtrlType)
+                                   .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
-    public Dictionary<string, object> FilterMeta =>
-        Filter.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(MetaMessage)))
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> FilterMeta
+    {
+        get
+        {
+            return Filter.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(MetaMessage)))
+                         .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
-    public Dictionary<string, object> FilterChannelVoice =>
-        Filter.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(ChannelVoiceMessage)))
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> FilterChannelVoice
+    {
+        get
+        {
+            return Filter.Where(x => x.Value is Type tp && tp.IsSubclassOf(typeof(ChannelVoiceMessage)))
+                         .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
-    public Dictionary<string, object> FilterSysEx =>
-        Filter.Where(x => x.Value is SysExType)
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> FilterSysEx
+    {
+        get
+        {
+            return Filter.Where(x => x.Value is SysExType)
+                         .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
-    public Dictionary<string, object> FilterControlChange =>
-        Filter.Where(x => x.Value is CtrlType)
-        .ToDictionary(x => x.Key, x => x.Value);
+    public Dictionary<string, object> FilterControlChange
+    {
+        get
+        {
+            return Filter.Where(x => x.Value is CtrlType)
+                         .ToDictionary(x => x.Key, x => x.Value);
+        }
+    }
 
     #endregion
 
@@ -83,12 +129,13 @@ public class SMFConverter
 
     public SMFConverter()
     {
-
     }
 
     #endregion
 
-    #region Method
+    #region Methods
+
+    #region General
 
     public static void Convert(ConvertType convertType, MidiData source, MidiData result)
     {
@@ -98,10 +145,12 @@ public class SMFConverter
         result.ConvertType = convertType;
 
         result.Origine = new MidiData(source.Division);
+
         foreach (var track in source.Tracks)
         {
             result.Origine.AddTrack(track);
         }
+
         result.Origine.Organize();
 
         switch (convertType, source.Format)
@@ -117,15 +166,19 @@ public class SMFConverter
             case (ConvertType.Format0, DataFormat.Format0):
                 Copy(source, ref result);
                 break;
+
             case (ConvertType.Format0, DataFormat.Format1):
                 MergeTrack(source, ref result);
                 break;
+
             case (ConvertType.Format1, DataFormat.Format0):
                 ChannelSeparate(source, ref result);
                 break;
+
             case (ConvertType.Format1, DataFormat.Format1):
                 Copy(source, ref result);
                 break;
+
             default:
                 throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
         }
@@ -140,8 +193,11 @@ public class SMFConverter
         Def.Setting.FilterKeys.AddRange(Def.Filter.Keys);
 
         var rootPath = Path.Combine(ConverterSetting.Root, CONFIG_ROOT);
+
         if (!Directory.Exists(rootPath))
+        {
             Directory.CreateDirectory(rootPath);
+        }
 
         var options = new JsonSerializerOptions
         {
@@ -169,9 +225,8 @@ public class SMFConverter
                 Converters = { new JsonStringEnumConverter() },
             };
 
-            Def.Setting =
-                JsonSerializer.Deserialize<ConverterSetting>(File.ReadAllText(filePath), options)
-                ?? throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+            Def.Setting = JsonSerializer.Deserialize<ConverterSetting>(File.ReadAllText(filePath), options)
+                          ?? throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
         }
 
         SetFilters();
@@ -192,28 +247,38 @@ public class SMFConverter
             .ToList().ForEach(x =>
             {
                 string? name = x.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName;
+
                 if (name != null)
+                {
                     Def.FilterTargetList.Add(name, x);
+                }
             });
 
         Enum.GetValues<SysExType>()
             .ToList().ForEach(x =>
             {
                 string? name = x.GetDisplayAttribute()?.Name ?? $"{x}";
+
                 if (name != null)
+                {
                     Def.FilterTargetList.Add(name, x);
+                }
             });
 
         Enum.GetValues<CtrlType>()
             .ToList().ForEach(x =>
             {
                 string? name = Enum.GetName(x);
+
                 if (name != null)
+                {
                     Def.FilterTargetList.Add(name, x);
+                }
             });
 
         Def.InitFilter.Clear();
         Def.Filter.Clear();
+
         foreach (string name in Def.Setting.FilterKeys)
         {
             if (Def.FilterTargetList.TryGetValue(name, out var msg))
@@ -237,7 +302,13 @@ public class SMFConverter
 
     private static void ChannelSeparate(MidiData midiData, ref MidiData result)
     {
-        foreach (var item in midiData.GetAllEvents().OrderBy(x => x.Channel).ThenBy(x => x.AbsoluteTick).ThenBy(x => x.Seqnum).GroupBy(x => x.Channel))
+        var groupedEvents = midiData.GetAllEvents()
+                                    .OrderBy(x => x.Channel)
+                                    .ThenBy(x => x.AbsoluteTick)
+                                    .ThenBy(x => x.Seqnum)
+                                    .GroupBy(x => x.Channel);
+
+        foreach (var item in groupedEvents)
         {
             ITrack track = result.NewTrack<Track>();
             track.EventAddRange(item);
@@ -250,12 +321,21 @@ public class SMFConverter
     {
         ITrack track = result.NewTrack<Track>();
 
-        foreach (var ev in midiData.GetAllEvents().OrderBy(x => x.AbsoluteTick).ThenBy(x => x.Channel).ThenBy(x => x.Seqnum))
+        var sortedEvents = midiData.GetAllEvents()
+                                   .OrderBy(x => x.AbsoluteTick)
+                                   .ThenBy(x => x.Channel)
+                                   .ThenBy(x => x.Seqnum);
+
+        foreach (var ev in sortedEvents)
         {
             if (ev.Message is EndOfTrack)
+            {
                 continue;
+            }
+
             track.EventAdd(ev with { Parent = track, Message = ev.Message with { } });
         }
+
         track.EventAdd(0, new EndOfTrack());
         result.AddTrack(track);
     }
@@ -263,12 +343,12 @@ public class SMFConverter
     private static void SplitChannelInstrment(MidiData midiData, ref MidiData result)
     {
         // 全トラックをチャンンネル別に振り分ける
-        var byChannel =
-            midiData.Tracks.Where(x => x is Track)
-            .SelectMany(tr => tr.Events)
-            .OrderBy(ev => ev.AbsoluteTick).ThenBy(ev => ev.Seqnum)
-            .GroupBy(ev => ev.Channel)
-            .ToArray();
+        var byChannel = midiData.Tracks.Where(x => x is Track)
+                                .SelectMany(tr => tr.Events)
+                                .OrderBy(ev => ev.AbsoluteTick)
+                                .ThenBy(ev => ev.Seqnum)
+                                .GroupBy(ev => ev.Channel)
+                                .ToArray();
 
         if (Def.Setting.CreateCodeTrack && midiData.GetTrack(0).Events.Any(x => x.Message is XFStyleCode))
         {
@@ -278,18 +358,16 @@ public class SMFConverter
         foreach (var events in byChannel.OrderBy(x => x.Key))
         {
             bool needQueue = false;
-            Queue<MidiEvent> buff = new();
-
+            Queue<MidiEvent> buff = new Queue<MidiEvent>();
             ITrack track = result.NewTrack<Track>();
 
             foreach (var ev in events)
             {
                 bool isNoteEvent = ev.Message is NoteOn || ev.Message is NoteOff;
 
-                needQueue |=
-                    (ev.Message is ControlChange msb && msb.CtrlType == CtrlType.BankMSB) ||
-                    (ev.Message is ControlChange lsb && lsb.CtrlType == CtrlType.BankLSB) ||
-                    (ev.Message is ProgramChange);
+                needQueue |= (ev.Message is ControlChange msb && msb.CtrlType == CtrlType.BankMSB) ||
+                             (ev.Message is ControlChange lsb && lsb.CtrlType == CtrlType.BankLSB) ||
+                             (ev.Message is ProgramChange);
 
                 if (isNoteEvent == false && needQueue)
                 {
@@ -304,8 +382,12 @@ public class SMFConverter
                         result.AddTrack(track);
                         track = result.NewTrack<Track>();
                     }
+
                     while (buff.Count != 0)
+                    {
                         track.EventAdd(buff.Dequeue());
+                    }
+
                     needQueue = false;
                     buff.Clear();
                 }
@@ -316,8 +398,11 @@ public class SMFConverter
             if (buff.Any(x => x.Message is ProgramChange))
             {
                 while (buff.Count != 0)
+                {
                     track.EventAdd(buff.Dequeue());
+                }
             }
+
             buff.Clear();
 
             if (track.Events.Any())
@@ -335,11 +420,11 @@ public class SMFConverter
             {
                 continue;
             }
+
             result.RemoveTrack(track);
         }
 
         var tracks = result.Tracks.ToList();
-
         result.ClearTracks();
 
         foreach (var channel in tracks.OrderBy(x => x.Channel).GroupBy(x => x.Channel))
@@ -359,11 +444,12 @@ public class SMFConverter
                 }
 
                 ITrack newTrack = result.NewTrack<Track>();
-                ;
+
                 foreach (var item in inst)
                 {
                     newTrack.EventAddRange(item.Events);
                 }
+
                 result.AddTrack(newTrack);
             }
         }
@@ -376,15 +462,16 @@ public class SMFConverter
     {
         try
         {
-
-            //
+            // Control Track
             var ctrltrack = result.NewTrack<Track>();
             ctrltrack.EventInsertHead(new MidiEvent(ctrltrack) { AbsoluteTick = 0, Message = new SequenceTrackName($"#Control#") });
 
             foreach (var midiEvent in midiData.GetAllEvents())
             {
                 if (midiEvent.Message is ChannelMessage)
+                {
                     continue;
+                }
 
                 if (midiEvent.Message is Tempo && !ctrltrack.Events.Any(x => x.Message is Tempo && x.AbsoluteTick == midiEvent.AbsoluteTick))
                 {
@@ -402,7 +489,7 @@ public class SMFConverter
 
             result.AddTrack(ctrltrack);
 
-            //
+            // Data Tracks
             foreach (var track in midiData.Tracks)
             {
                 var newtrack = result.NewTrack<Track>();
@@ -460,20 +547,18 @@ public class SMFConverter
             result.Organize();
             result.Tracks.ToList().ForEach(tr => tr.SetFilter(Def.InitFilter.Select(x => x.Key).ToArray()));
         }
-        catch (Exception ex)
+        catch
         {
-
+            // Silent Catch
         }
     }
 
     private static ITrack GetCodeTrack(MidiData midiData, ref MidiData result, List<MidiEvent> events)
     {
         ITrack track = result.NewTrack<Track>();
-        List<byte> buff = [];
-        long abstick = 0;
+        List<byte> buff = new List<byte>();
 
         track.IsCodeTrack = true;
-
         track.EventAdd(new MidiEvent(track) { AbsoluteTick = 0, Message = new SequenceTrackName("#Code Track#") });
 
         foreach (var ev in events)
@@ -487,19 +572,24 @@ public class SMFConverter
                         track.EventAdd(ev with { AbsoluteTick = ev.AbsoluteTick - 1, Message = new NoteOff(1, v, 0) });
                     }
                 }
+
                 buff.Clear();
                 buff.AddRange(code.GetCodeVoicing());
+
                 foreach (var v in buff)
                 {
                     track.EventAdd(ev with { AbsoluteTick = ev.AbsoluteTick, Message = new NoteOn(1, v, 100) });
                 }
             }
-            abstick = ev.AbsoluteTick;
         }
 
         if (buff.Count != 0)
         {
-            if (midiData.Tracks.Select(x => x.Events.LastOrDefault()).OrderBy(x => x?.AbsoluteTick).LastOrDefault() is MidiEvent last)
+            var lastEvent = midiData.Tracks.Select(x => x.Events.LastOrDefault())
+                                    .OrderBy(x => x?.AbsoluteTick)
+                                    .LastOrDefault();
+
+            if (lastEvent is MidiEvent last)
             {
                 foreach (var v in buff)
                 {
@@ -518,9 +608,11 @@ public class SMFConverter
         var tracks = midiData.Tracks.Where(x => x.Output).ToArray();
 
         if (tracks.Length == 0)
+        {
             throw new ArgumentException($"{MethodBase.GetCurrentMethod()}");
+        }
 
-        MidiData result = new()
+        MidiData result = new MidiData
         {
             FilePath = midiData.FilePath,
             Division = midiData.Division,
@@ -552,11 +644,16 @@ public class SMFConverter
     {
         SaveConfig();
 
-        string folderName = Path.GetFileNameWithoutExtension(folderPath);
         filename ??= Path.GetFileNameWithoutExtension(folderPath);
 
-        List<int> output = [];
-        midiData.NumberOfTrack.RangeEach(x => { if (midiData.GetTrack(x).Output) output.Add(x); });
+        List<int> output = new List<int>();
+        midiData.NumberOfTrack.RangeEach(x =>
+        {
+            if (midiData.GetTrack(x).Output)
+            {
+                output.Add(x);
+            }
+        });
 
         string pathMID = Path.Combine(folderPath, $"{filename}.mid");
         string pathNOPC = Path.Combine(folderPath, $"{filename}_NOPC.mid");
@@ -568,7 +665,6 @@ public class SMFConverter
         if (mid)
         {
             midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
-
             midiData.FilePath = pathMID;
             SaveMidiData(midiData, Def.Setting.Encode, false);
         }
@@ -606,6 +702,7 @@ public class SMFConverter
             if (srttext)
             {
                 var srt = karaoke.GetSRT(Def.Setting.SRTOffset, Def.Setting.SRTRemoveComment);
+
                 if (srt.Length > 0)
                 {
                     File.WriteAllText(pathSRT, srt);
@@ -615,6 +712,7 @@ public class SMFConverter
             if (lyrictext)
             {
                 var txt = karaoke.Lyric;
+
                 if (txt.Length > 0)
                 {
                     File.WriteAllText(pathTEXT, txt);
@@ -622,7 +720,6 @@ public class SMFConverter
             }
         }
 
-        //
         midiData.NumberOfTrack.RangeEach(x => midiData.GetTrack(x).Output = output.Contains(x));
         LoadConfig();
     }
@@ -632,9 +729,10 @@ public class SMFConverter
         SaveConfig();
 
         int num = 0;
+
         foreach (var track in midiData.Tracks)
         {
-            MidiData sepalated = new()
+            MidiData sepalated = new MidiData
             {
                 MidiStd = midiData.MidiStd,
                 FilePath = Path.Combine(folderPath, $"#{num} {track}.mid"),
@@ -655,6 +753,8 @@ public class SMFConverter
 
         LoadConfig();
     }
+
+    #endregion
 
     #endregion
 }
