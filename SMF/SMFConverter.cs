@@ -624,7 +624,7 @@ public class SMFConverter
             {
                 tr.DoFilter();
                 ITrack track = result.NewTrack(tr.GetType());
-                track.EventAddRange(tr.FilterdEvents);
+                track.EventAddRange(tr.FilteredEvents);
                 result.AddTrack(track);
             }
             else
