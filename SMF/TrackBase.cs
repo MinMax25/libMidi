@@ -54,7 +54,7 @@ public abstract class TrackBase
         }
     }
 
-    public IEnumerable<MidiEvent> FilterdEvents
+    public IEnumerable<MidiEvent> FilteredEvents
     {
         get
         {

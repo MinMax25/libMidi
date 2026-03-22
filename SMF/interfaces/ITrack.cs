@@ -9,7 +9,7 @@ public interface ITrack
     //
     IEnumerable<MidiEvent> Events { get; }
 
-    IEnumerable<MidiEvent> FilterdEvents { get; }
+    IEnumerable<MidiEvent> FilteredEvents { get; }
 
     Dictionary<string, object> Filter { get; }
 
