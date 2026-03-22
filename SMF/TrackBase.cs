@@ -261,7 +261,10 @@ public abstract class TrackBase
                 // Set Lyric
                 if (LyricMatched && msg is NoteOn lyricNote && lyricNote.Velocity != 0)
                 {
-                    msg = ProcessLyricMatching(ev, ref lastWord, ref hitWord);
+                    if (ProcessLyricMatching(ev, ref lastWord, ref hitWord) is MidiMessage lyric)
+                    {
+                        _FilterdEvents.Add(ev with { Message = lyric });
+                    }
                 }
 
                 // Note Transpose / NoteOn to NoteOff conversion
