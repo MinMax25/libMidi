@@ -110,10 +110,18 @@ public class XFKaraokeMessage : TrackBase
                 sw = true;
             }
 
+            var tStart = t1.Key;
+            var tEnd = t2.Key;
+
+            if (t2.Key < t1.Key)
+            {
+                tEnd = t1.Key + TimeSpan.FromSeconds(1);
+            }
+
             srt.AppendLine(count.ToString());
-            srt.Append(TimeSpanToSrtFormat(t1.Key));
+            srt.Append(TimeSpanToSrtFormat(tStart));
             srt.Append(" --> ");
-            srt.AppendLine(TimeSpanToSrtFormat(t2.Key - TimeSpan.FromMilliseconds(1)));
+            srt.AppendLine(TimeSpanToSrtFormat(tEnd));
             srt.AppendLine(t1.Value);
 
             t1 = t2;
