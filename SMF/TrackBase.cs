@@ -28,7 +28,7 @@ public abstract class TrackBase
 
     private readonly List<MidiEvent> _Events = [];
 
-    private readonly List<MidiEvent> _FilterdEvents = [];
+    private readonly List<MidiEvent> _FilteredEvents = [];
 
     #endregion
 
@@ -58,7 +58,7 @@ public abstract class TrackBase
     {
         get
         {
-            return FilterEnabled ? _FilterdEvents : _Events;
+            return FilterEnabled ? _FilteredEvents : _Events;
         }
     }
 
@@ -200,7 +200,7 @@ public abstract class TrackBase
             return;
         }
 
-        _FilterdEvents.Clear();
+        _FilteredEvents.Clear();
 
         // Option: Insert TrackName
         if (SMFConverter.Def.Setting.InsertTrackName)
@@ -209,7 +209,7 @@ public abstract class TrackBase
             {
                 string trackName = GetDefaultTrackName();
                 var metaName = new MidiEvent(this) { AbsoluteTick = 0, Message = new SequenceTrackName(trackName) };
-                _FilterdEvents.Add(metaName);
+                _FilteredEvents.Add(metaName);
             }
         }
 
@@ -249,7 +249,7 @@ public abstract class TrackBase
             {
                 if (ev.Message is XFStyleRehearsalMark rehearsalMark && Filter.ContainsValue(typeof(libMidi.Messages.Marker)))
                 {
-                    _FilterdEvents.Add(ev with { Message = new Marker(rehearsalMark.Section()) });
+                    _FilteredEvents.Add(ev with { Message = new Marker(rehearsalMark.Section()) });
                 }
             }
 
@@ -263,7 +263,7 @@ public abstract class TrackBase
                 {
                     if (ProcessLyricMatching(ev, ref lastWord, ref hitWord) is MidiMessage lyric)
                     {
-                        _FilterdEvents.Add(ev with { Message = lyric });
+                        _FilteredEvents.Add(ev with { Message = lyric });
                     }
                 }
 
@@ -280,7 +280,7 @@ public abstract class TrackBase
                     }
                 }
 
-                _FilterdEvents.Add(ev with { Message = msg });
+                _FilteredEvents.Add(ev with { Message = msg });
             }
         }
 
@@ -459,7 +459,7 @@ public abstract class TrackBase
 
     private void ApplyChannelFix()
     {
-        foreach (MidiEvent item in _FilterdEvents.Where(x => x.Message is ChannelMessage))
+        foreach (MidiEvent item in _FilteredEvents.Where(x => x.Message is ChannelMessage))
         {
             if (item.Message is ChannelMessage msg)
             {
@@ -470,11 +470,11 @@ public abstract class TrackBase
 
     private void AddEndOfTrack()
     {
-        var eotEvent = (_FilterdEvents.LastOrDefault() ?? new MidiEvent(this) { AbsoluteTick = 0 }) with { Message = new EndOfTrack() };
-        _FilterdEvents.Add(eotEvent);
+        var eotEvent = (_FilteredEvents.LastOrDefault() ?? new MidiEvent(this) { AbsoluteTick = 0 }) with { Message = new EndOfTrack() };
+        _FilteredEvents.Add(eotEvent);
 
         int seq = 1;
-        foreach (var ev in _FilterdEvents)
+        foreach (var ev in _FilteredEvents)
         {
             ev.Seqnum = seq++;
         }
