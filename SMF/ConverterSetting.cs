@@ -21,7 +21,7 @@ public class ConverterSetting
 
     public bool CreateCodeTrack { get; set; } = true;
 
-    public bool LyricAdustment { get; set; } = true;
+    public bool LyricAdjustment { get; set; } = true;
 
     public bool LyricPaddingPlus { get; set; } = true;
 
