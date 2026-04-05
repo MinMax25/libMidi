@@ -674,7 +674,7 @@ public class SMFConverter
         {
             midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
 
-            Def.Setting.LyricAdustment = true;
+            Def.Setting.LyricAdjustment = true;
             Def.Setting.LyricPaddingPlus = false;
             Def.Setting.RemoveProgramChange = true;
 
@@ -688,7 +688,7 @@ public class SMFConverter
             midiData.Tracks.ToList().ForEach(tr => tr.Output = tr.LyricMatched);
             midiData.GetTrack(0).Output = true;
 
-            Def.Setting.LyricAdustment = true;
+            Def.Setting.LyricAdjustment = true;
             Def.Setting.LyricPaddingPlus = true;
             Def.Setting.RemoveProgramChange = false;
 
