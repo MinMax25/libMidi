@@ -622,6 +622,7 @@ public class SMFConverter
         {
             if (filter)
             {
+                tr.FilterEnabled = filter;
                 tr.DoFilter();
                 ITrack track = result.NewTrack(tr.GetType());
                 track.EventAddRange(tr.FilteredEvents);
@@ -679,7 +680,7 @@ public class SMFConverter
             Def.Setting.RemoveProgramChange = true;
 
             midiData.FilePath = pathNOPC;
-            SaveMidiData(midiData);
+            SaveMidiData(midiData, Def.Setting.Encode);
         }
 
         // _Vocal.mid
