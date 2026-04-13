@@ -261,7 +261,7 @@ public abstract class TrackBase
                 // Set Lyric
                 if (LyricMatched && msg is NoteOn lyricNote && lyricNote.Velocity != 0)
                 {
-                    if (ProcessLyricMatching(ev, ref lastWord, ref hitWord) is MidiMessage lyric)
+                    if (ProcessLyricMatching(ev, ref lastWord, ref hitWord) is Lyric lyric)
                     {
                         _FilteredEvents.Add(ev with { Message = lyric });
                     }
