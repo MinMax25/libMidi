@@ -1,9 +1,15 @@
 ﻿namespace libMidi.SMF;
 
-public class XFInfomationHeader
+public class XFInformationHeader
     : TrackBase
 {
-    public XFInfomationHeader(MidiData midiData) : base(midiData) { }
+    public XFInformationHeader(MidiData midiData) : base(midiData) { }
 
     public override byte[] ChunkID => XFID_ID;
+}
+
+[System.Obsolete("Use XFInformationHeader instead.")]
+public class XFInfomationHeader : XFInformationHeader
+{
+    public XFInfomationHeader(MidiData midiData) : base(midiData) { }
 }
