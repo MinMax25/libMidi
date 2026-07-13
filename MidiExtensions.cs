@@ -108,7 +108,7 @@ public static class MidiExtensions
         return
             new BreakedTime()
             {
-                Mesure = (sumMeasure + deltaMeasure) + 1,
+                Measure = (sumMeasure + deltaMeasure) + 1,
                 Beat = ((deltaTime % (unitTick * lastNN)) / unitTick) + 1,
                 Tick = deltaTime % unitTick,
                 NN = lastNN,

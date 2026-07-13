@@ -128,7 +128,7 @@ public static class SMFLoader
     private static ITrack TrackReader(ISMFReader reader, MidiData midiData)
     {
         ITrack track = NewTrack(reader, midiData);
-        int trackLenght = GetChunkDataLength(reader);
+        int trackLength = GetChunkDataLength(reader);
 
         long absoluteTick = 0;
 
@@ -143,7 +143,7 @@ public static class SMFLoader
                 track.EventAdd(midiEvent);
             }
 
-            if (reader.TotalBytesRead >= trackLenght)
+            if (reader.TotalBytesRead >= trackLength)
             {
                 break;
             }
@@ -158,7 +158,7 @@ public static class SMFLoader
 
         if (id.SequenceEqual(Chunk.XFID_ID))
         {
-            return midiData.NewTrack<XFInfomationHeader>();
+            return midiData.NewTrack<XFInformationHeader>();
         }
 
         if (id.SequenceEqual(Chunk.XFKM_ID))
