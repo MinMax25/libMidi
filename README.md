@@ -4,15 +4,17 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-blueviolet)](https://dotnet.microsoft.com/)
 
 SMF（Standard MIDI File）用に開発された .NET ライブラリです。  
-MIDI チャンネル、デバイスピッチ、ドラムマッピングなどの処理を簡単に行えます。
+MIDI チャンネルやメッセージ、SMF データの読み込み・変換処理を簡単に行えます。
 
 ---
 
 ## 🌟 主な機能
 
-- MIDI デバイスのピッチ管理
-- ドラムマッピングサポート
-- SMF データ処理ユーティリティ
+- `SMFReader` : SMFバイナリのバイト単位の読み取り（可変長数値・エンディアン変換など）
+- `SMFLoader` : SMFファイルから `MidiData` オブジェクトへの読み込み
+- `SMFConverter` : `MidiData` のフォーマット変換・フィルタリング・書き出し（結合/分割保存を含む）
+- MIDI メッセージ（チャンネル / メタ / システム / SysEx）の型安全なモデル化
+- ヤマハ XF 形式（カラオケ・スタイル情報）拡張メタイベント対応
 
 ---
 
