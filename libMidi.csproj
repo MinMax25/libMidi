@@ -5,9 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
-    <Version>1.0.6</Version>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <VersionPrefix>1.0.6</VersionPrefix>
+    <Version>1.0.7</Version>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <VersionPrefix>1.0.7</VersionPrefix>
 
     <!-- NuGet Package Info -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
