@@ -1,4 +1,4 @@
-﻿namespace libMidi.SMF.interfaces;
+namespace libMidi.SMF.interfaces;
 
 public interface ISMFReader
     : IDisposable

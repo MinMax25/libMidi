@@ -1,4 +1,4 @@
-﻿namespace libMidi.Messages.enums;
+namespace libMidi.Messages.enums;
 
 public enum CtrlType
 {

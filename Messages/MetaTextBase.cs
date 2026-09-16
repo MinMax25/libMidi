@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using libMidi.Messages.interfaces;
 
 namespace libMidi.Messages;

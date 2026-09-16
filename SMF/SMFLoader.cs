@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using libMidi.Messages;
 using libMidi.Messages.enums;
 using libMidi.SMF.interfaces;

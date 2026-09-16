@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Reflection;
 using libMidi.Messages.enums;
 using libMidi.Messages.interfaces;

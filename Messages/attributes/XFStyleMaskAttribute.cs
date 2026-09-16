@@ -1,4 +1,4 @@
-﻿namespace libMidi.Messages.attributes;
+namespace libMidi.Messages.attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class XFStyleMaskAttribute
