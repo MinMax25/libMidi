@@ -1,4 +1,4 @@
-﻿namespace libMidi.Messages.attributes;
+namespace libMidi.Messages.attributes;
 
 [AttributeUsage(AttributeTargets.Field)]
 public class ExclusiveMaskAttribute

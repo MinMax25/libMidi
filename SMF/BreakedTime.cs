@@ -1,4 +1,4 @@
-﻿namespace libMidi.SMF;
+namespace libMidi.SMF;
 
 public class BreakedTime
 {

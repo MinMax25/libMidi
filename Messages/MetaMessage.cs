@@ -1,4 +1,4 @@
-﻿using libMidi.Messages.enums;
+using libMidi.Messages.enums;
 
 namespace libMidi.Messages;
 

@@ -1,4 +1,4 @@
-﻿using libMidi.Messages.interfaces;
+using libMidi.Messages.interfaces;
 
 namespace libMidi.Messages;
 
