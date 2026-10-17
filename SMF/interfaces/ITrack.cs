@@ -6,7 +6,6 @@ public interface ITrack
 {
     #region Properties
 
-    //
     IEnumerable<MidiEvent> Events { get; }
 
     IEnumerable<MidiEvent> FilteredEvents { get; }
@@ -25,7 +24,6 @@ public interface ITrack
 
     byte TrackNumber { get; }
 
-    // organized
     IEnumerable<byte> Channels { get; }
 
     byte Channel { get; }

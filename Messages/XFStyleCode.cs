@@ -31,7 +31,7 @@ public record XFStyleCode
         }
 
         if (Data[5] != 0x7f)
-        {   // Base Note
+        {    
             result.Add((byte)(GetPitch(Data[5]) - 12));
         }
 
