@@ -36,8 +36,6 @@ public static class SMFLoader
             }
             catch
             {
-                // リアルタイムメッセージが紛れ込んだ場合の対処未実装のため
-                // 応急処置
             }
 
             foreach (ITrack track in midiData.Tracks)
@@ -88,11 +86,9 @@ public static class SMFLoader
 
         _ = GetChunkDataLength(reader);
 
-        // format / tracks
         _ = reader.ReadShort();
         _ = reader.ReadShort();
 
-        // division
         short data3 = reader.ReadShort();
 
         return new MidiData(data3);
@@ -191,10 +187,8 @@ public static class SMFLoader
     {
         byte byte1st = reader.ReadByte();
 
-        // fix running status
         byte status = byte1st.IsMSBOn() ? byte1st : LastStatusByte(midiEvent.Parent);
 
-        // status != byte1stの場合はランニングステータス
         return ParseMidiMessage(reader, status, byte1st);
     }
 
@@ -215,7 +209,6 @@ public static class SMFLoader
 
     private static MidiMessage ParseMidiMessage(ISMFReader reader, byte status, byte byte1st)
     {
-        // System Message
         if (status == 0xf0 || status == 0xf7)
         {
             return ParseSystemExMessage(reader);
@@ -231,7 +224,6 @@ public static class SMFLoader
             throw new NotImplementedException($"{MethodBase.GetCurrentMethod()}");
         }
 
-        // Channel Message
         return status.Upper4bit() switch
         {
             0x80 => ParseNoteOff(reader, status, byte1st),
@@ -265,7 +257,6 @@ public static class SMFLoader
 
         return metaType switch
         {
-            // Text Base
             MetaType.MetaText => ParseTextBaseMessage<MetaText>(reader),
             MetaType.Copyright => ParseTextBaseMessage<CopyrightNotice>(reader),
             MetaType.SequenceTrackName => ParseTextBaseMessage<SequenceTrackName>(reader),
@@ -277,7 +268,6 @@ public static class SMFLoader
             MetaType.DeviceName => ParseTextBaseMessage<DeviceName>(reader),
             MetaType.ChannelPrefix => ParseTextBaseMessage<ChannelPrefix>(reader),
 
-            // Other
             MetaType.SequenceNumber => ParseSequenceNumber(reader),
             MetaType.PortPrefix => ParsePortPrefixEvent(reader),
             MetaType.EndOfTrack => ParseEndOfTrack(reader),
@@ -338,7 +328,6 @@ public static class SMFLoader
             Array.Reverse(bytes);
         }
 
-        // 3byte読み込み後のパディング処理
         float val = BitConverter.ToInt32(bytes.Concat(new byte[] { 0 }).ToArray());
 
         if (val == 0)

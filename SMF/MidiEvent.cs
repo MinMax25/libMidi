@@ -38,7 +38,6 @@ public record MidiEvent<T>
             return DeltaTick.MidiVarToByte().Concat(Message.GetByte()).ToArray();
     }
 
-    // MidiEventからのCast
     public static explicit operator MidiEvent<T>(MidiEvent target)
     {
         return

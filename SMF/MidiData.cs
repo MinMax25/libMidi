@@ -363,14 +363,12 @@ public class MidiData
     {
         List<byte> bytes = new List<byte>();
 
-        // Header
         bytes.AddRange(Chunk.HEADER_ID);
         bytes.AddRange(((int)0x06).GetByte());
         bytes.AddRange(((short)Format).GetByte());
         bytes.AddRange(NumberOfTrack.GetByte());
         bytes.AddRange(Division.GetByte());
 
-        // Tracks
         foreach (var tr in Tracks)
         {
             bytes.AddRange(tr.GetByte());

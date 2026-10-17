@@ -7,8 +7,6 @@ public interface ISMFReader
 
     int TotalBytesRead { get; set; }
 
-    //byte[] Read(byte[] buffer);
-
     byte[] ReadBytes(int count);
 
     byte ReadByte();
