@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using libMidi.Messages;
 using libMidi.SMF.enums;
 using libMidi.SMF.interfaces;
@@ -38,7 +38,6 @@ public record MidiEvent<T>
             return DeltaTick.MidiVarToByte().Concat(Message.GetByte()).ToArray();
     }
 
-    // MidiEventからのCast
     public static explicit operator MidiEvent<T>(MidiEvent target)
     {
         return

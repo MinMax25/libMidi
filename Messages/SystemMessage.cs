@@ -1,4 +1,4 @@
-﻿namespace libMidi.Messages;
+namespace libMidi.Messages;
 
 public abstract record SystemMessage
     : MidiMessage

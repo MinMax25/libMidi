@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using libMidi.Messages.attributes;
 
 namespace libMidi.Messages.enums;

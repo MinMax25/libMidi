@@ -1,4 +1,4 @@
-﻿using libMidi.Messages.enums;
+using libMidi.Messages.enums;
 
 namespace libMidi.Messages;
 
@@ -9,7 +9,7 @@ public abstract record MetaMessage
 
     public abstract MetaType MetaType { get; }
 
-    public override int Length => 2;    // StatusByte & MetaType
+    public override int Length => 2;
 
     public override byte[] GetByte() => [StatusByte, (byte)MetaType];
 

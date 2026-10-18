@@ -1,4 +1,4 @@
-﻿namespace libMidi.SMF.interfaces;
+namespace libMidi.SMF.interfaces;
 
 public interface ISMFReader
     : IDisposable
@@ -6,8 +6,6 @@ public interface ISMFReader
     bool EOF { get; }
 
     int TotalBytesRead { get; set; }
-
-    //byte[] Read(byte[] buffer);
 
     byte[] ReadBytes(int count);
 

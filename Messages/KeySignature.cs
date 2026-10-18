@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using libMidi.Messages.enums;
 
 namespace libMidi.Messages;
@@ -16,7 +16,7 @@ public record KeySignature
 
     public Key Key { get; init; }
 
-    public override int Length => base.Length + 1 + 2;  // base & datasize & data.length
+    public override int Length => base.Length + 1 + 2;
 
     public override byte[] GetByte()
     {

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using libMidi.Messages.enums;
 
 namespace libMidi.Messages;
@@ -18,7 +18,7 @@ public record SmpteOffset
 
     public override MetaType MetaType => MetaType.SmpteOffset;
 
-    public override int Length => base.Length + 1 + 5;  // base & datasize & data.length
+    public override int Length => base.Length + 1 + 5;
 
     public byte HR { get; init; }
     public byte MN { get; init; }

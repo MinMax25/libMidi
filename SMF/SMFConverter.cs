@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -342,7 +342,6 @@ public class SMFConverter
 
     private static void SplitChannelInstrment(MidiData midiData, ref MidiData result)
     {
-        // 全トラックをチャンンネル別に振り分ける
         var byChannel = midiData.Tracks.Where(x => x is Track)
                                 .SelectMany(tr => tr.Events)
                                 .OrderBy(ev => ev.AbsoluteTick)
@@ -462,7 +461,6 @@ public class SMFConverter
     {
         try
         {
-            // Control Track
             var ctrltrack = result.NewTrack<Track>();
             ctrltrack.EventInsertHead(new MidiEvent(ctrltrack) { AbsoluteTick = 0, Message = new SequenceTrackName($"#Control#") });
 
@@ -489,7 +487,6 @@ public class SMFConverter
 
             result.AddTrack(ctrltrack);
 
-            // Data Tracks
             foreach (var track in midiData.Tracks)
             {
                 var newtrack = result.NewTrack<Track>();
@@ -549,7 +546,6 @@ public class SMFConverter
         }
         catch
         {
-            // Silent Catch
         }
     }
 
@@ -662,7 +658,6 @@ public class SMFConverter
         string pathSRT = Path.Combine(folderPath, $"{filename}_Lyric.srt");
         string pathTEXT = Path.Combine(folderPath, $"{filename}_Lyric.txt");
 
-        // .mid
         if (mid)
         {
             midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
@@ -670,7 +665,6 @@ public class SMFConverter
             SaveMidiData(midiData, Def.Setting.Encode, false);
         }
 
-        // _NOPC.mid
         if (nopc)
         {
             midiData.Tracks.ToList().ForEach(tr => tr.Output = true);
@@ -683,7 +677,6 @@ public class SMFConverter
             SaveMidiData(midiData, Def.Setting.Encode);
         }
 
-        // _Vocal.mid
         if (vocal)
         {
             midiData.Tracks.ToList().ForEach(tr => tr.Output = tr.LyricMatched);
@@ -697,7 +690,6 @@ public class SMFConverter
             SaveMidiData(midiData);
         }
 
-        // .srt, .txt
         if (midiData.Origin?.Tracks.FirstOrDefault(x => x is XFKaraokeMessage) is XFKaraokeMessage karaoke)
         {
             if (srttext)

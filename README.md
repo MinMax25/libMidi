@@ -1,31 +1,84 @@
 # libMidi
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![.NET](https://img.shields.io/badge/.NET-8.0-blueviolet)](https://dotnet.microsoft.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MinMax25/libMidi/blob/master/LICENSE.txt)
+[![.NET](https://img.shields.io/badge/.NET-10.0-blueviolet)](https://dotnet.microsoft.com/)
 
-SMF（Standard MIDI File）用に開発された .NET ライブラリです。  
-MIDI チャンネルやメッセージ、SMF データの読み込み・変換処理を簡単に行えます。
+Standard MIDI File（SMF）を読み込み、解析・編集・変換・保存するための .NET ライブラリです。
 
----
+現在のパッケージバージョンは `2.0.0`、Target Frameworkは `net10.0-windows7.0` です。v2.0.0では.NET 10専用となり、.NET 8は対象外です。
 
-## 🌟 主な機能
+## 主な機能
 
-- `SMFReader` : SMFバイナリのバイト単位の読み取り（可変長数値・エンディアン変換など）
-- `SMFLoader` : SMFファイルから `MidiData` オブジェクトへの読み込み
-- `SMFConverter` : `MidiData` のフォーマット変換・フィルタリング・書き出し（結合/分割保存を含む）
-- MIDI メッセージ（チャンネル / メタ / システム / SysEx）の型安全なモデル化
-- ヤマハ XF 形式（カラオケ・スタイル情報）拡張メタイベント対応
+- SMF Format 0 / Format 1 の読み込みと書き出し
+- Format 0 / Format 1 間の変換
+- チャンネル別、音色別、マルチティンバー単位へのトラック分割
+- チャンネル、メタイベント、システムエクスクルーシブ（SysEx）のメッセージモデル
+- テンポマップ、拍子、使用チャンネル、音源規格（GM / GM2 / GS / XG）、ドラムチャンネルの解析
+- イベントの追加・削除・フィルタリング
+- ヤマハ XF のインフォメーションヘッダー、カラオケ、スタイル情報の解析
+- XF カラオケ歌詞の SRT / テキスト出力
 
----
+## 動作環境
 
-## 開発環境：
-- .NET SDK 8.0 以上
-- Windows 7 以降
+- .NET 10 SDK
+- ターゲットフレームワーク: `net10.0-windows7.0`
 
-## ライセンス：MIT
+## ビルド
 
-## 免責事項
-本ソフトウェアは「フリーソフト」であり、個人での利用に限り無償で使用可能とします。
-本ソフトウェアは、その不具合、または、本ソフトウェアを利用することによって生じたあらゆる損害について、作者または提供者は一切の責任を負いません。
-ソフトウェアの入手および利用は、利用者の自己の責任と費用により行ってください。
-本ソフトウェアは、予告なく提供を中止することがあります。本提供の終了によって、利用者および第三者に発生した損失や損害について、作者または提供者は一切責任を負いません。
+```console
+dotnet build libMidi.sln
+```
+
+別のプロジェクトから利用する場合は、`libMidi.csproj` へのプロジェクト参照を追加します。
+
+```console
+dotnet add <利用側プロジェクト> reference <libMidi.csprojへのパス>
+```
+
+## 基本的な使い方
+
+### MIDI ファイルを読み込む
+
+```csharp
+using libMidi.Messages;
+using libMidi.SMF;
+
+MidiData midi = SMFLoader.Load("input.mid");
+
+Console.WriteLine(midi.Format);
+Console.WriteLine($"Tracks: {midi.NumberOfTrack}");
+Console.WriteLine($"Division: {midi.Division}");
+
+foreach (MidiEvent<NoteOn> note in midi.GetAllEvents<NoteOn>())
+{
+    Console.WriteLine($"tick={note.AbsoluteTick}, ch={note.Channel}, note={note.Message.Pitch}");
+}
+```
+
+### 変換して保存する
+
+```csharp
+using libMidi.SMF;
+using libMidi.SMF.enums;
+
+MidiData source = SMFLoader.Load("input.mid");
+var converted = new MidiData();
+
+SMFConverter.Convert(ConvertType.Format0, source, converted);
+
+converted.FilePath = "output.mid";
+SMFConverter.SaveMidiData(converted, SMFEncode.UTF8, filter: false);
+```
+
+`ConvertType` には次の値があります。
+
+- `Format0`: 全トラックを統合して Format 0 に変換
+- `Format1`: Format 0 をチャンネル別トラックに分割（Format 1 はコピー）
+- `Instrument`: 音色単位でトラックを分割
+- `MultiTimber`: 複数チャンネルを含むトラックをチャンネル単位に分割
+
+`SaveMidiData` は `MidiData.FilePath` に書き出します。既定では有効なフィルターを適用するため、全イベントをそのまま保存したい場合は `filter: false` を指定してください。文字列イベントの出力エンコーディングは `SMFEncode.UTF8` または `SMFEncode.SJIS` から選択できます。
+
+## ライセンス
+
+[MIT License](https://github.com/MinMax25/libMidi/blob/master/LICENSE.txt)

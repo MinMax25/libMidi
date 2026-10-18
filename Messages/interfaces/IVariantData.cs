@@ -1,4 +1,4 @@
-﻿namespace libMidi.Messages.interfaces;
+namespace libMidi.Messages.interfaces;
 
 public interface IVariantData
 {

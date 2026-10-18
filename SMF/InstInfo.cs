@@ -1,4 +1,4 @@
-﻿using libMidi.SMF.enums;
+using libMidi.SMF.enums;
 
 namespace libMidi.SMF;
 
