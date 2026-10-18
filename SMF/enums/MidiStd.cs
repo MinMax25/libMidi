@@ -1,4 +1,4 @@
-﻿namespace libMidi.SMF.enums;
+namespace libMidi.SMF.enums;
 
 public enum MidiStd
 {

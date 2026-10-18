@@ -1,7 +1,6 @@
-﻿namespace libMidi.SMF;
+namespace libMidi.SMF;
 
 public class MidiDataLoadedEventArgs
     : EventArgs
 {
-
 }

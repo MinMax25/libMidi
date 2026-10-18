@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Reflection;
 using libMidi.Messages.enums;
 
@@ -21,7 +21,7 @@ public record TimeSignature
 
     public override MetaType MetaType => MetaType.TimeSignature;
 
-    public override int Length => base.Length + 1 + 4;  // base & datasize & data.length
+    public override int Length => base.Length + 1 + 4;
 
     public byte NN { get; init; }
     public byte DD { get; init; }

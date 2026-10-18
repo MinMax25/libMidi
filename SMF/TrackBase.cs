@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -151,11 +151,9 @@ public abstract class TrackBase
 
     public void Organize()
     {
-        // Channels / Channel
         Channels = _Events.Where(x => x.Channel > 0).Select(x => x.Channel).Distinct().OrderBy(x => x).ToArray();
         Channel = (byte)(Channels.Count() == 1 ? Channels.FirstOrDefault() : 0);
 
-        // InstInfo
         InstInfo = (Parent?.ConvertType == ConvertType.Instrument || Parent?.ConvertType == ConvertType.MultiTimber)
             ? _Events.FirstOrDefault(x => x.InstrumentInfo != null)?.InstrumentInfo
             : null;
@@ -166,12 +164,10 @@ public abstract class TrackBase
             EventAdd(0, new ProgramChange(10, 0));
         }
 
-        // Flags
         IsDrum = (InstInfo != null) && (Parent?.DrumChannel.Any(x => x == Channel) ?? false);
         HasLyric = this.GetMidiMessages<Lyric>().Any();
         IsPoly = this.GetMidiEvents<NoteOn>(x => x.Message.Velocity != 0).GroupBy(x => x.AbsoluteTick).Where(x => x.Count() > 1).Any();
 
-        // Lyric String
         Lyric = string.Join("", this.GetMidiMessages<Lyric>().Select(x => x.Text).ToArray())
             .Replace("<", "\r\n" + "[Page]" + "\r\n")
             .Replace("/", "\r\n")
@@ -179,7 +175,6 @@ public abstract class TrackBase
             .Replace("^", " ")
             .TrimStart();
 
-        // Ratio
         if (Parent?.ConvertType != ConvertType.Instrument)
         {
             LyricMatchRatio = 0;
@@ -202,7 +197,6 @@ public abstract class TrackBase
 
         _FilteredEvents.Clear();
 
-        // Option: Insert TrackName
         if (SMFConverter.Def.Setting.InsertTrackName)
         {
             if (_Events.FirstOrDefault(x => x.Message is SequenceTrackName) == null)
@@ -218,7 +212,6 @@ public abstract class TrackBase
 
         foreach (MidiEvent ev in _Events.OrderBy(x => x.Seqnum))
         {
-            // Option: Lyric Adjustment
             if (SMFConverter.Def.Setting.InsertTrackName && LyricMatched)
             {
                 if (!ev.WhichCtrlType(CtrlType.BankMSB) &
@@ -230,7 +223,6 @@ public abstract class TrackBase
                 }
             }
 
-            // Option: Remove ProgramChange
             if (SMFConverter.Def.Setting.RemoveProgramChange)
             {
                 if (ev.Message is ProgramChange)
@@ -244,7 +236,6 @@ public abstract class TrackBase
                 }
             }
 
-            // Option: XF Style Convert
             if (SMFConverter.Def.Setting.XFStyleConvert)
             {
                 if (ev.Message is XFStyleRehearsalMark rehearsalMark && Filter.ContainsValue(typeof(libMidi.Messages.Marker)))
@@ -253,12 +244,10 @@ public abstract class TrackBase
                 }
             }
 
-            // Filter (Meta, Channel, CC, SysEx)
             if (IsEventTarget(ev))
             {
                 MidiMessage msg = ev.Message;
 
-                // Set Lyric
                 if (LyricMatched && msg is NoteOn lyricNote && lyricNote.Velocity != 0)
                 {
                     if (ProcessLyricMatching(ev, ref lastWord, ref hitWord) is Lyric lyric)
@@ -267,7 +256,6 @@ public abstract class TrackBase
                     }
                 }
 
-                // Note Transpose / NoteOn to NoteOff conversion
                 if (msg is ChannelNoteMessage note)
                 {
                     if (SMFConverter.Def.Setting.ReplaceNoteOn && note is NoteOn repNote && repNote.Velocity == 0)
@@ -284,13 +272,11 @@ public abstract class TrackBase
             }
         }
 
-        // Option: Channel Fix
         if ((Parent.ConvertType == ConvertType.Instrument) & SMFConverter.Def.Setting.ChannelFix)
         {
             ApplyChannelFix();
         }
 
-        // Finalize (EOT & Seqnum)
         AddEndOfTrack();
     }
 

@@ -1,4 +1,4 @@
-﻿using libMidi.SMF.interfaces;
+using libMidi.SMF.interfaces;
 
 namespace libMidi.Messages;
 
