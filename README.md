@@ -1,9 +1,11 @@
 # libMidi
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.txt)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/MinMax25/libMidi/blob/master/LICENSE.txt)
 [![.NET](https://img.shields.io/badge/.NET-10.0-blueviolet)](https://dotnet.microsoft.com/)
 
 Standard MIDI File（SMF）を読み込み、解析・編集・変換・保存するための .NET ライブラリです。
+
+現在のパッケージバージョンは `2.0.0`、Target Frameworkは `net10.0-windows7.0` です。v2.0.0では.NET 10専用となり、.NET 8は対象外です。
 
 ## 主な機能
 
@@ -79,4 +81,4 @@ SMFConverter.SaveMidiData(converted, SMFEncode.UTF8, filter: false);
 
 ## ライセンス
 
-[MIT License](LICENSE.txt)
+[MIT License](https://github.com/MinMax25/libMidi/blob/master/LICENSE.txt)
