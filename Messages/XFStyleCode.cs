@@ -31,7 +31,7 @@ public record XFStyleCode
         }
 
         if (Data[5] != 0x7f)
-        {    
+        {
             result.Add((byte)(GetPitch(Data[5]) - 12));
         }
 
