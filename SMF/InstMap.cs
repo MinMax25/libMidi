@@ -6,8 +6,6 @@ namespace libMidi.SMF;
 
 public static class InstMap
 {
-    const string INSTFILE_ROOT = @"Config\Instrument";
-
     public static Dictionary<MidiStd, Dictionary<string, Dictionary<string, Dictionary<string, string>>>> Map
     {
         get
@@ -25,7 +23,7 @@ public static class InstMap
 
     public static void Initialize(string? path = null)
     {
-        string rootPath = path ?? Path.Combine(ConverterSetting.Root, INSTFILE_ROOT);
+        string rootPath = path ?? Path.Combine(ConverterSetting.Root, "Config", "Instrument");
 
         if (!Directory.Exists(rootPath))
             Directory.CreateDirectory(rootPath);

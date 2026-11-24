@@ -1,0 +1,32 @@
+{
+  "Provider": {
+    "Exception": "NotSupportedException"
+  },
+  "Utf8Decode": {
+    "Exception": "NotSupportedException"
+  },
+  "Cp932Decode": {
+    "Exception": "NotSupportedException"
+  },
+  "Utf8Load": {
+    "Value": {
+      "Format": "Format1",
+      "Division": 480,
+      "NumberOfTrack": 0,
+      "MidiStd": "GM",
+      "Tracks": []
+    }
+  },
+  "Cp932Load": {
+    "Value": {
+      "Format": "Format1",
+      "Division": 480,
+      "NumberOfTrack": 0,
+      "MidiStd": "GM",
+      "Tracks": []
+    }
+  },
+  "Cp932Save": {
+    "Exception": "NotSupportedException"
+  }
+}

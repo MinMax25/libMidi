@@ -1,0 +1,61 @@
+{
+  "DefaultRootIsAppBase": true,
+  "Config": {
+    "Defaults": {
+      "ChannelFix": true,
+      "InsertTrackName": true,
+      "RemoveProgramChange": true,
+      "ReplaceNoteOn": true,
+      "CreateCodeTrack": true,
+      "LyricAdjustment": true,
+      "LyricPaddingPlus": true,
+      "SRTOffset": -300,
+      "SRTRemoveComment": true,
+      "XFStyleConvert": true,
+      "Encode": 0,
+      "FilterKeys": [
+        "\u8ABF\u306E\u8A2D\u5B9A",
+        "\u6B4C\u8A5E",
+        "\u30DE\u30FC\u30AB\u30FC",
+        "\u30B7\u30FC\u30B1\u30F3\u30B9\u540D (\u66F2\u30BF\u30A4\u30C8\u30EB) /\u30C8\u30E9\u30C3\u30AF\u540D",
+        "\u30C6\u30F3\u30DD",
+        "\u62CD\u5B50\u306E\u8A2D\u5B9A",
+        "\u30CE\u30FC\u30C8\u30FB\u30AA\u30D5",
+        "\u30CE\u30FC\u30C8\u30FB\u30AA\u30F3",
+        "\u30D4\u30C3\u30C1\u30D9\u30F3\u30C9",
+        "Expression",
+        "Hold1"
+      ]
+    },
+    "DefaultFilter": [
+      "\u8ABF\u306E\u8A2D\u5B9A",
+      "\u6B4C\u8A5E",
+      "\u30DE\u30FC\u30AB\u30FC",
+      "\u30B7\u30FC\u30B1\u30F3\u30B9\u540D (\u66F2\u30BF\u30A4\u30C8\u30EB) /\u30C8\u30E9\u30C3\u30AF\u540D",
+      "\u30C6\u30F3\u30DD",
+      "\u62CD\u5B50\u306E\u8A2D\u5B9A",
+      "\u30CE\u30FC\u30C8\u30FB\u30AA\u30D5",
+      "\u30CE\u30FC\u30C8\u30FB\u30AA\u30F3",
+      "\u30D4\u30C3\u30C1\u30D9\u30F3\u30C9",
+      "Expression",
+      "Hold1"
+    ],
+    "Saved": {
+      "ChannelFix": false,
+      "InsertTrackName": true,
+      "RemoveProgramChange": true,
+      "ReplaceNoteOn": true,
+      "CreateCodeTrack": true,
+      "LyricAdjustment": true,
+      "LyricPaddingPlus": true,
+      "SRTOffset": 425,
+      "SRTRemoveComment": true,
+      "XFStyleConvert": true,
+      "Encode": "UTF8",
+      "FilterKeys": [
+        "Expression"
+      ]
+    },
+    "Root": "\u4F5C\u696D \u30D5\u30A9\u30EB\u30C0\u30FC"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "Commit": "2ad182a63eabd6d56a6043697c4afd59e846a446",
+  "Package": "libMidi.2.0.0.nupkg",
+  "PackageAssemblySha256": "2ECEA7293BED70C96E5A153F524A80B21ECDFB35AE7F91570757853C1D2F03E6",
+  "Sdk": "10.0.404",
+  "TargetRuntime": "10.0.0",
+  "InstalledRuntimes": [
+    "10.0.15"
+  ],
+  "OS": "Microsoft Windows 10.0.26300",
+  "Architecture": "X64",
+  "ProbeCulture": "InvariantCulture"
+}

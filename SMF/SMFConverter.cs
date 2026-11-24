@@ -728,7 +728,7 @@ public class SMFConverter
             MidiData sepalated = new MidiData
             {
                 MidiStd = midiData.MidiStd,
-                FilePath = Path.Combine(folderPath, $"#{num} {track}.mid"),
+                FilePath = Path.Combine(folderPath, $"#{num} {ToTrackFileName(track.ToString() ?? string.Empty)}.mid"),
                 ConvertType = midiData.ConvertType
             };
 
@@ -745,6 +745,12 @@ public class SMFConverter
         }
 
         LoadConfig();
+    }
+
+    private static string ToTrackFileName(string name)
+    {
+        const string invalidCharacters = "/\\<>:\"|?*";
+        return string.Concat(name.Select(c => c < ' ' || invalidCharacters.Contains(c) ? '_' : c));
     }
 
     #endregion

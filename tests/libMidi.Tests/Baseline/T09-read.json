@@ -1,0 +1,8 @@
+{
+  "SRTOffset": 425,
+  "ChannelFix": false,
+  "Encode": "UTF8",
+  "Filter": [
+    "Expression"
+  ]
+}

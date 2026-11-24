@@ -1,0 +1,94 @@
+{
+  "Tempo": [
+    {
+      "Tick": 0,
+      "BPM": 120,
+      "TimeTicks": 0
+    },
+    {
+      "Tick": 1920,
+      "BPM": 60,
+      "TimeTicks": 20000000
+    }
+  ],
+  "Positions": [
+    {
+      "AbsoluteTick": 0,
+      "Measure": 1,
+      "Beat": 1,
+      "Tick": 0,
+      "NN": 4,
+      "DD": 2
+    },
+    {
+      "AbsoluteTick": 0,
+      "Measure": 1,
+      "Beat": 1,
+      "Tick": 0,
+      "NN": 4,
+      "DD": 2
+    },
+    {
+      "AbsoluteTick": 480,
+      "Measure": 1,
+      "Beat": 2,
+      "Tick": 0,
+      "NN": 4,
+      "DD": 2
+    },
+    {
+      "AbsoluteTick": 1920,
+      "Measure": 2,
+      "Beat": 1,
+      "Tick": 0,
+      "NN": 4,
+      "DD": 2
+    },
+    {
+      "AbsoluteTick": 1920,
+      "Measure": 2,
+      "Beat": 1,
+      "Tick": 0,
+      "NN": 4,
+      "DD": 2
+    },
+    {
+      "AbsoluteTick": 2160,
+      "Measure": 2,
+      "Beat": 2,
+      "Tick": 0,
+      "NN": 3,
+      "DD": 3
+    },
+    {
+      "AbsoluteTick": 2160,
+      "Measure": 2,
+      "Beat": 2,
+      "Tick": 0,
+      "NN": 3,
+      "DD": 3
+    }
+  ],
+  "Vlq": [
+    {
+      "Value": 127,
+      "Length": 1,
+      "Output": "7F"
+    },
+    {
+      "Value": 128,
+      "Length": 2,
+      "Output": "8100"
+    },
+    {
+      "Value": 16383,
+      "Length": 2,
+      "Output": "FF7F"
+    },
+    {
+      "Value": 16384,
+      "Length": 3,
+      "Output": "818000"
+    }
+  ]
+}

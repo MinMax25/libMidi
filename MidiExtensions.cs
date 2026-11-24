@@ -48,7 +48,7 @@ public static class MidiExtensions
 
     public static byte[] EncodeUTF8(this byte[] target)
     {
-        string txtSJIS = Encoding.GetEncoding(932).GetString(target);
+        string txtSJIS = MidiTextEncoding.Cp932.GetString(target);
         string txtUTF8 = Encoding.UTF8.GetString(target);
 
         byte[] bytesUTF8 = Encoding.UTF8.GetBytes(txtUTF8);

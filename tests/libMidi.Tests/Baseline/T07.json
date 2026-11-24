@@ -1,0 +1,64 @@
+{
+  "Read": [
+    {
+      "Text": "ABC",
+      "Utf8": "414243"
+    },
+    {
+      "Text": "\u65E5\u672C",
+      "Utf8": "E697A5E69CAC"
+    },
+    {
+      "Text": "\u65E5\u672C",
+      "Utf8": "E697A5E69CAC"
+    },
+    {
+      "Text": "\u2170",
+      "Utf8": "E285B0"
+    },
+    {
+      "Text": "\u00A9",
+      "Utf8": "C2A9"
+    },
+    {
+      "Text": "",
+      "Utf8": ""
+    },
+    {
+      "Text": "\u30FB",
+      "Utf8": "E383BB"
+    },
+    {
+      "Text": "\uD83D\uDE00",
+      "Utf8": "F09F9880"
+    }
+  ],
+  "RoundTrips": [
+    {
+      "Encoding": "UTF8",
+      "Text": [
+        "ABC",
+        "\u65E5\u672C",
+        "\u65E5\u672C",
+        "\u2170",
+        "\u00A9",
+        "",
+        "\u30FB",
+        "\uD83D\uDE00"
+      ]
+    },
+    {
+      "Encoding": "SJIS",
+      "Text": [
+        "ABC",
+        "\u65E5\u672C",
+        "\u65E5\u672C",
+        "\u2170",
+        "c",
+        "",
+        "\u30FB",
+        "??"
+      ]
+    }
+  ]
+}
