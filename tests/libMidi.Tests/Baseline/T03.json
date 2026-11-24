@@ -1,0 +1,748 @@
+[
+  {
+    "Conversion": "Format1",
+    "Result": {
+      "Format": "Format1",
+      "Division": 480,
+      "NumberOfTrack": 3,
+      "MidiStd": "GM",
+      "Tracks": [
+        {
+          "Type": "Track",
+          "Channels": [],
+          "IsDrum": false,
+          "Events": [
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "Tempo",
+              "Bytes": "FF510307A120",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "TimeSignature",
+              "Bytes": "FF580404021808",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "KeySignature",
+              "Bytes": "FF5902FF00",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "SequenceTrackName",
+              "Bytes": "FF030454756E65",
+              "Text": "Tune",
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 0,
+              "Type": "SysExMessage",
+              "Bytes": "F7057E7F0901F7",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 0,
+              "Type": "EndOfTrack",
+              "Bytes": "FF2F00",
+              "Text": null,
+              "Instrument": null
+            }
+          ]
+        },
+        {
+          "Type": "Track",
+          "Channels": [
+            1
+          ],
+          "IsDrum": false,
+          "Events": [
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00001",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B02002",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ProgramChange",
+              "Bytes": "C005",
+              "Text": null,
+              "Instrument": "#GM, 1, 2, 5#"
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903C64",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 127,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903E50",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "NoteOff",
+              "Bytes": "803C40",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PolyphonicKeyPressure",
+              "Bytes": "A03E31",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "AfterTouch",
+              "Bytes": "D032",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PitchBend",
+              "Bytes": "E00041",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00B60",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B0407F",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 0,
+              "Type": "EndOfTrack",
+              "Bytes": "FF2F00",
+              "Text": null,
+              "Instrument": null
+            }
+          ]
+        },
+        {
+          "Type": "Track",
+          "Channels": [
+            10
+          ],
+          "IsDrum": true,
+          "Events": [
+            {
+              "Tick": 16638,
+              "Channel": 10,
+              "Type": "NoteOff",
+              "Bytes": "892450",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 10,
+              "Type": "NoteOn",
+              "Bytes": "992650",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 0,
+              "Type": "EndOfTrack",
+              "Bytes": "FF2F00",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 10,
+              "Type": "ProgramChange",
+              "Bytes": "C900",
+              "Text": null,
+              "Instrument": null
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "Conversion": "Format0",
+    "Result": {
+      "Format": "Format0",
+      "Division": 480,
+      "NumberOfTrack": 1,
+      "MidiStd": "GM",
+      "Tracks": [
+        {
+          "Type": "Track",
+          "Channels": [
+            1,
+            10
+          ],
+          "IsDrum": false,
+          "Events": [
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "Tempo",
+              "Bytes": "FF510307A120",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "SequenceTrackName",
+              "Bytes": "FF030454756E65",
+              "Text": "Tune",
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "TimeSignature",
+              "Bytes": "FF580404021808",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "KeySignature",
+              "Bytes": "FF5902FF00",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00001",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B02002",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ProgramChange",
+              "Bytes": "C005",
+              "Text": null,
+              "Instrument": "#GM, 1, 2, 5#"
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903C64",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 127,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903E50",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 0,
+              "Type": "SysExMessage",
+              "Bytes": "F7057E7F0901F7",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "NoteOff",
+              "Bytes": "803C40",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PolyphonicKeyPressure",
+              "Bytes": "A03E31",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "AfterTouch",
+              "Bytes": "D032",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PitchBend",
+              "Bytes": "E00041",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00B60",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B0407F",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 16638,
+              "Channel": 10,
+              "Type": "NoteOff",
+              "Bytes": "892450",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 10,
+              "Type": "NoteOn",
+              "Bytes": "992650",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 0,
+              "Type": "EndOfTrack",
+              "Bytes": "FF2F00",
+              "Text": null,
+              "Instrument": null
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "Conversion": "Format0",
+    "Result": {
+      "Format": "Format0",
+      "Division": 480,
+      "NumberOfTrack": 1,
+      "MidiStd": "GM",
+      "Tracks": [
+        {
+          "Type": "Track",
+          "Channels": [
+            1,
+            10
+          ],
+          "IsDrum": false,
+          "Events": [
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "Tempo",
+              "Bytes": "FF510307A120",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "TimeSignature",
+              "Bytes": "FF580404021808",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "KeySignature",
+              "Bytes": "FF5902FF00",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "SequenceTrackName",
+              "Bytes": "FF030454756E65",
+              "Text": "Tune",
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00001",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B02002",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ProgramChange",
+              "Bytes": "C005",
+              "Text": null,
+              "Instrument": "#GM, 1, 2, 5#"
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903C64",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 127,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903E50",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "NoteOff",
+              "Bytes": "803C40",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PolyphonicKeyPressure",
+              "Bytes": "A03E31",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "AfterTouch",
+              "Bytes": "D032",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PitchBend",
+              "Bytes": "E00041",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00B60",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B0407F",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 0,
+              "Type": "SysExMessage",
+              "Bytes": "F7057E7F0901F7",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 16638,
+              "Channel": 10,
+              "Type": "NoteOff",
+              "Bytes": "892450",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 10,
+              "Type": "NoteOn",
+              "Bytes": "992650",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 0,
+              "Type": "EndOfTrack",
+              "Bytes": "FF2F00",
+              "Text": null,
+              "Instrument": null
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "Conversion": "Format1",
+    "Result": {
+      "Format": "Format1",
+      "Division": 480,
+      "NumberOfTrack": 2,
+      "MidiStd": "GM",
+      "Tracks": [
+        {
+          "Type": "Track",
+          "Channels": [],
+          "IsDrum": false,
+          "Events": [
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "Tempo",
+              "Bytes": "FF510307A120",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "TimeSignature",
+              "Bytes": "FF580404021808",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "KeySignature",
+              "Bytes": "FF5902FF00",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "EndOfTrack",
+              "Bytes": "FF2F00",
+              "Text": null,
+              "Instrument": null
+            }
+          ]
+        },
+        {
+          "Type": "Track",
+          "Channels": [
+            1,
+            10
+          ],
+          "IsDrum": false,
+          "Events": [
+            {
+              "Tick": 0,
+              "Channel": 0,
+              "Type": "SequenceTrackName",
+              "Bytes": "FF030454756E65",
+              "Text": "Tune",
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00001",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B02002",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "ProgramChange",
+              "Bytes": "C005",
+              "Text": null,
+              "Instrument": "#GM, 1, 2, 5#"
+            },
+            {
+              "Tick": 0,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903C64",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 127,
+              "Channel": 1,
+              "Type": "NoteOn",
+              "Bytes": "903E50",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "NoteOff",
+              "Bytes": "803C40",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PolyphonicKeyPressure",
+              "Bytes": "A03E31",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "AfterTouch",
+              "Bytes": "D032",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "PitchBend",
+              "Bytes": "E00041",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B00B60",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 1,
+              "Type": "ControlChange",
+              "Bytes": "B0407F",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 255,
+              "Channel": 0,
+              "Type": "SysExMessage",
+              "Bytes": "F7057E7F0901F7",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 16638,
+              "Channel": 10,
+              "Type": "NoteOff",
+              "Bytes": "892450",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 10,
+              "Type": "NoteOn",
+              "Bytes": "992650",
+              "Text": null,
+              "Instrument": null
+            },
+            {
+              "Tick": 33022,
+              "Channel": 0,
+              "Type": "EndOfTrack",
+              "Bytes": "FF2F00",
+              "Text": null,
+              "Instrument": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

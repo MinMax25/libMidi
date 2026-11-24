@@ -1,0 +1,3 @@
+*.mid binary
+*.srt -text
+*.txt -text

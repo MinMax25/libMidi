@@ -1,4 +1,3 @@
-using System.Text;
 using libMidi.Messages;
 using libMidi.SMF.enums;
 using libMidi.SMF.interfaces;
@@ -33,7 +32,7 @@ public record MidiEvent<T>
     public byte[] GetByte()
     {
         if (Message is MetaTextBase text && SMFConverter.Def.Setting.Encode == SMFEncode.SJIS)
-            return DeltaTick.MidiVarToByte().Concat((text with { Data = Encoding.GetEncoding(932).GetBytes(text.Text) }).GetByte()).ToArray();
+            return DeltaTick.MidiVarToByte().Concat((text with { Data = MidiTextEncoding.Cp932.GetBytes(text.Text) }).GetByte()).ToArray();
         else
             return DeltaTick.MidiVarToByte().Concat(Message.GetByte()).ToArray();
     }

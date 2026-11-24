@@ -5,7 +5,7 @@
 
 Standard MIDI File（SMF）を読み込み、解析・編集・変換・保存するための .NET ライブラリです。
 
-現在のパッケージバージョンは `2.0.0`、Target Frameworkは `net10.0-windows7.0` です。v2.0.0では.NET 10専用となり、.NET 8は対象外です。
+libMidi 2.1.0 は OS 固有のサフィックスを持たない `net10.0` を対象とします。2.0.0 の対象は `net10.0-windows7.0` です。
 
 ## 主な機能
 
@@ -20,8 +20,8 @@ Standard MIDI File（SMF）を読み込み、解析・編集・変換・保存�
 
 ## 動作環境
 
-- .NET 10 SDK
-- ターゲットフレームワーク: `net10.0-windows7.0`
+- ビルドには .NET 10 SDK、実行には .NET 10 Runtime が必要です。
+- ライブラリの互換性 CI は Windows、Linux、macOS の x64／Arm64 を対象とします。利用アプリの対応 OS は各アプリの要件に従います。
 
 ## ビルド
 
@@ -78,6 +78,26 @@ SMFConverter.SaveMidiData(converted, SMFEncode.UTF8, filter: false);
 - `MultiTimber`: 複数チャンネルを含むトラックをチャンネル単位に分割
 
 `SaveMidiData` は `MidiData.FilePath` に書き出します。既定では有効なフィルターを適用するため、全イベントをそのまま保存したい場合は `filter: false` を指定してください。文字列イベントの出力エンコーディングは `SMFEncode.UTF8` または `SMFEncode.SJIS` から選択できます。
+
+### 設定ファイルと音色定義の配置
+
+2.1.0 では、利用アプリ側でコードページプロバイダーを登録せずに CP932 の読み書きができます。
+
+設定先の既定値はアプリケーションのベースディレクトリです。別の書き込み可能なディレクトリを使う場合は、MIDI を読み込んだり `SMFConverter.Def` や `InstMap.Map` にアクセスしたりする前に、`ConverterSetting.Root` に指定してください。
+
+- 設定ファイルは Root 配下の `Config/Config.json` に保存します。
+- 音色定義の `GM.json`、`GS.json`、`XG.json` は Root 配下の `Config/Instrument/` に置きます。`InstMap.Initialize(path)` で別の音色定義ディレクトリも指定できます。
+
+## 2.1.0 の保存互換性
+
+- 分割 MIDI のファイル名では、トラック名中の `/\<>:"|?*` と U+0020 未満の制御文字を `_` に置換します。置換はファイル名に適用され、MIDI 内のトラック名は保持されます。
+- XF から生成する SRT の構造改行には、OS にかかわらず CRLF を使います。
+
+## 既知の制約
+
+- System Common／System Real Time メッセージの処理には未実装の範囲があります。
+- 一部のメッセージの `Length` と、`InstMap` の再初期化には既知の制約があります。起動時に音色定義のルートを設定してください。
+- `SaveSetMidiData` の明示ファイル名には単一のファイル名を渡してください。絶対パスや区切り文字を含む名前の扱いは未確定です。
 
 ## ライセンス
 

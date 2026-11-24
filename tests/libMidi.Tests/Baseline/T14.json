@@ -1,0 +1,14 @@
+{
+  "Id": "libMidi",
+  "Libraries": [
+    "lib/net10.0-windows7.0/libMidi.dll"
+  ],
+  "Dependencies": [
+    {
+      "Target": "net10.0-windows7.0",
+      "Items": []
+    }
+  ],
+  "AssemblyMatchesBuild": true,
+  "VersionMatchesBuild": true
+}

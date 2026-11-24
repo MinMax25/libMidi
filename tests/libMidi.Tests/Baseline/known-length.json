@@ -1,0 +1,23 @@
+[
+  {
+    "Type": "MetaText",
+    "Declared": {
+      "Exception": "IndexOutOfRangeException"
+    },
+    "Bytes": 3
+  },
+  {
+    "Type": "MetaText",
+    "Declared": {
+      "Exception": "IndexOutOfRangeException"
+    },
+    "Bytes": 4
+  },
+  {
+    "Type": "SequencerSpecific",
+    "Declared": {
+      "Value": 6
+    },
+    "Bytes": 5
+  }
+]

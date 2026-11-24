@@ -33,6 +33,7 @@ public class XFKaraokeMessage : TrackBase
 
     public string GetSRT(long offset, bool srtRemoveComment)
     {
+        const string newLine = "\r\n";
         Dictionary<TimeSpan, string> data = new Dictionary<TimeSpan, string>();
 
         TimeSpan st = default;
@@ -103,7 +104,7 @@ public class XFKaraokeMessage : TrackBase
 
             if (sw)
             {
-                srt.AppendLine(string.Empty);
+                srt.Append(newLine);
             }
             else
             {
@@ -118,11 +119,11 @@ public class XFKaraokeMessage : TrackBase
                 tEnd = t1.Key + TimeSpan.FromSeconds(1);
             }
 
-            srt.AppendLine(count.ToString());
+            srt.Append(count.ToString()).Append(newLine);
             srt.Append(TimeSpanToSrtFormat(tStart));
             srt.Append(" --> ");
-            srt.AppendLine(TimeSpanToSrtFormat(tEnd));
-            srt.AppendLine(t1.Value);
+            srt.Append(TimeSpanToSrtFormat(tEnd)).Append(newLine);
+            srt.Append(t1.Value).Append(newLine);
 
             t1 = t2;
             count++;

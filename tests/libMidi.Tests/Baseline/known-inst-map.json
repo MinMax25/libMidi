@@ -1,0 +1,6 @@
+{
+  "Count": 1,
+  "Repeat": {
+    "Exception": "ArgumentException"
+  }
+}

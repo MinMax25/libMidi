@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libMidi", "libMidi.csproj", "{A00842D3-5558-AE16-65CC-5EC5D1AEE555}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libMidi.Tests", "tests\libMidi.Tests\libMidi.Tests.csproj", "{66D83099-F403-4AE7-B8CA-218F8887D574}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{A00842D3-5558-AE16-65CC-5EC5D1AEE555}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A00842D3-5558-AE16-65CC-5EC5D1AEE555}.Release|x64.ActiveCfg = Release|x64
 		{A00842D3-5558-AE16-65CC-5EC5D1AEE555}.Release|x64.Build.0 = Release|x64
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Debug|x64.ActiveCfg = Debug|x64
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Debug|x64.Build.0 = Debug|x64
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Release|x64.ActiveCfg = Release|x64
+		{66D83099-F403-4AE7-B8CA-218F8887D574}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

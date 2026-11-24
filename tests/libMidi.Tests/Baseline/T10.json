@@ -1,0 +1,207 @@
+{
+  "Source": {
+    "Format": "Format0",
+    "Division": 480,
+    "NumberOfTrack": 1,
+    "MidiStd": "GM",
+    "Tracks": [
+      {
+        "Type": "Track",
+        "Channels": [],
+        "IsDrum": false,
+        "Events": [
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "Tempo",
+            "Bytes": "FF510307A120",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "TimeSignature",
+            "Bytes": "FF580404021808",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "KeySignature",
+            "Bytes": "FF5902FF00",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "EndOfTrack",
+            "Bytes": "FF2F00",
+            "Text": null,
+            "Instrument": null
+          }
+        ]
+      },
+      {
+        "Type": "XFInformationHeader",
+        "Channels": [],
+        "IsDrum": false,
+        "Events": [
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "XFStyleCode",
+            "Bytes": "FF7F07437B0131007F7F",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "EndOfTrack",
+            "Bytes": "FF2F00",
+            "Text": null,
+            "Instrument": null
+          }
+        ]
+      },
+      {
+        "Type": "XFKaraokeMessage",
+        "Channels": [],
+        "IsDrum": false,
+        "Events": [
+          {
+            "Tick": 480,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF05053C415B785D",
+            "Text": "\u003CA[x]",
+            "Instrument": null
+          },
+          {
+            "Tick": 960,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF0504425E433E",
+            "Text": "B^C\u003E",
+            "Instrument": null
+          },
+          {
+            "Tick": 1440,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF05022F44",
+            "Text": "/D",
+            "Instrument": null
+          },
+          {
+            "Tick": 1920,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF05022F45",
+            "Text": "/E",
+            "Instrument": null
+          },
+          {
+            "Tick": 1920,
+            "Channel": 0,
+            "Type": "EndOfTrack",
+            "Bytes": "FF2F00",
+            "Text": null,
+            "Instrument": null
+          }
+        ]
+      }
+    ]
+  },
+  "Converted": {
+    "Format": "Format0",
+    "Division": 480,
+    "NumberOfTrack": 1,
+    "MidiStd": "GM",
+    "Tracks": [
+      {
+        "Type": "Track",
+        "Channels": [],
+        "IsDrum": false,
+        "Events": [
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "Tempo",
+            "Bytes": "FF510307A120",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "XFStyleCode",
+            "Bytes": "FF7F07437B0131007F7F",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "TimeSignature",
+            "Bytes": "FF580404021808",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 0,
+            "Channel": 0,
+            "Type": "KeySignature",
+            "Bytes": "FF5902FF00",
+            "Text": null,
+            "Instrument": null
+          },
+          {
+            "Tick": 480,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF05053C415B785D",
+            "Text": "\u003CA[x]",
+            "Instrument": null
+          },
+          {
+            "Tick": 960,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF0504425E433E",
+            "Text": "B^C\u003E",
+            "Instrument": null
+          },
+          {
+            "Tick": 1440,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF05022F44",
+            "Text": "/D",
+            "Instrument": null
+          },
+          {
+            "Tick": 1920,
+            "Channel": 0,
+            "Type": "Lyric",
+            "Bytes": "FF05022F45",
+            "Text": "/E",
+            "Instrument": null
+          },
+          {
+            "Tick": 1920,
+            "Channel": 0,
+            "Type": "EndOfTrack",
+            "Bytes": "FF2F00",
+            "Text": null,
+            "Instrument": null
+          }
+        ]
+      }
+    ]
+  },
+  "Lyric": "[Page]\r\nA[x]B C\t\r\nD\r\nE"
+}
